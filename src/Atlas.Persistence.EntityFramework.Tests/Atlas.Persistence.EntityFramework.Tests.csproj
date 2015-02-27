@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{056DA1BB-6A59-4B7C-ABD7-E99A9633DC81}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Atlas.Persistence.EntityFramework.Tests</RootNamespace>
+    <AssemblyName>Atlas.Persistence.EntityFramework.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="CompareSchemaTests.cs" />
+    <Compile Include="Configuration\BaseClassConfiguration.cs" />
+    <Compile Include="Configuration\BaseClassPartitionedConfiguration.cs" />
+    <Compile Include="Configuration\FooConfiguration.cs" />
+    <Compile Include="Configuration\FooPartitionedConfiguration.cs" />
+    <Compile Include="Configuration\GuidChildConfiguration.cs" />
+    <Compile Include="Configuration\GuidParentConfiguration.cs" />
+    <Compile Include="Configuration\OptimisticConfiguration.cs" />
+    <Compile Include="Configuration\SubClassConfiguration.cs" />
+    <Compile Include="Configuration\SubClassPartitionedConfiguration.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitOfWork\ConcurrencyTests.cs" />
+    <Compile Include="UnitOfWork\EntityQueryableTests.cs" />
+    <Compile Include="UnitOfWork\PartitionedEntityQueryableTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FakeItEasy">
+      <HintPath>..\..\packages\FakeItEasy.1.25.2\lib\net40\FakeItEasy.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Atlas.Persistence.EntityFramework\Atlas.Persistence.EntityFramework.csproj">
+      <Project>{62CE261E-6B01-4A5B-8A97-2F5014BB356F}</Project>
+      <Name>Atlas.Persistence.EntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Atlas.Persistence.Testing\Atlas.Persistence.Testing.csproj">
+      <Project>{98BA5357-8897-4003-862E-10F1D3370A76}</Project>
+      <Name>Atlas.Persistence.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Atlas.Persistence\Atlas.Persistence.csproj">
+      <Project>{E81A8F77-E25C-41E9-BD97-60FF4D8DB5F5}</Project>
+      <Name>Atlas.Persistence</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

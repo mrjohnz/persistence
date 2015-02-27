@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas.Persistence", "Atlas.Persistence.csproj", "{E81A8F77-E25C-41E9-BD97-60FF4D8DB5F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas.Persistence.EntityFramework", "..\Atlas.Persistence.EntityFramework\Atlas.Persistence.EntityFramework.csproj", "{62CE261E-6B01-4A5B-8A97-2F5014BB356F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas.Persistence.EntityFramework.Tests", "..\Atlas.Persistence.EntityFramework.Tests\Atlas.Persistence.EntityFramework.Tests.csproj", "{056DA1BB-6A59-4B7C-ABD7-E99A9633DC81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas.Persistence.NHibernate", "..\Atlas.Persistence.NHibernate\Atlas.Persistence.NHibernate.csproj", "{82B41E9E-2ACF-42AA-9BAC-941EF4FEE80E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas.Persistence.NHibernate.Tests", "..\Atlas.Persistence.NHibernate.Tests\Atlas.Persistence.NHibernate.Tests.csproj", "{3CF6F19A-0547-44A3-A64B-E4057F4AF1DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E81A8F77-E25C-41E9-BD97-60FF4D8DB5F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E81A8F77-E25C-41E9-BD97-60FF4D8DB5F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E81A8F77-E25C-41E9-BD97-60FF4D8DB5F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E81A8F77-E25C-41E9-BD97-60FF4D8DB5F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62CE261E-6B01-4A5B-8A97-2F5014BB356F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62CE261E-6B01-4A5B-8A97-2F5014BB356F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62CE261E-6B01-4A5B-8A97-2F5014BB356F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62CE261E-6B01-4A5B-8A97-2F5014BB356F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{056DA1BB-6A59-4B7C-ABD7-E99A9633DC81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{056DA1BB-6A59-4B7C-ABD7-E99A9633DC81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{056DA1BB-6A59-4B7C-ABD7-E99A9633DC81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{056DA1BB-6A59-4B7C-ABD7-E99A9633DC81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82B41E9E-2ACF-42AA-9BAC-941EF4FEE80E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82B41E9E-2ACF-42AA-9BAC-941EF4FEE80E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82B41E9E-2ACF-42AA-9BAC-941EF4FEE80E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82B41E9E-2ACF-42AA-9BAC-941EF4FEE80E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CF6F19A-0547-44A3-A64B-E4057F4AF1DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CF6F19A-0547-44A3-A64B-E4057F4AF1DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CF6F19A-0547-44A3-A64B-E4057F4AF1DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CF6F19A-0547-44A3-A64B-E4057F4AF1DE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
