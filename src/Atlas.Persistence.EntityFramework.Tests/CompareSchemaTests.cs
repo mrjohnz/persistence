@@ -5,6 +5,8 @@
 //-----------------------------------------------------------------------
 namespace Atlas.Persistence.EntityFramework.Tests
 {
+   using System.Configuration;
+
    using Atlas.Domain.Persistence.EntityFramework.Tests;
    using Atlas.Persistence.EntityFramework.Implementations;
    using Atlas.Persistence.Testing;
@@ -20,20 +22,20 @@ namespace Atlas.Persistence.EntityFramework.Tests
       [Timeout(300000)]
       public void CompareSchema()
       {
-         const string SuperSetConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=AtlasPersistenceTests;Integrated Security=True;MultipleActiveResultSets=True";
-         const string SubSetConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=AtlasPersistenceTests_EntityFramework;Integrated Security=True;MultipleActiveResultSets=True";
+         var superSetConnectionString = ConfigurationManager.ConnectionStrings["Persistence"].ConnectionString;
+         var subSetConnectionString = ConfigurationManager.ConnectionStrings["PersistenceEF"].ConnectionString;
 
-         SqlServerSchema.Remove(SubSetConnectionString);
+         SqlServerSchema.Remove(subSetConnectionString);
 
          var configuration = new EntityFrameworkConfiguration();
          var logger = A.Fake<IPersistenceLogger>();
 
-         configuration.ConnectionString(SubSetConnectionString);
+         configuration.ConnectionString(subSetConnectionString);
          configuration.ProviderName(EntityFrameworkConfiguration.SqlServerProviderName);
          configuration.RegisterEntitiesFromAssemblyOf<FooConfiguration>();
          configuration.CreateSchema();
 
-         SqlServerSchema.AssertContained(logger, SuperSetConnectionString, SubSetConnectionString, false, "EdmMetadata");
+         SqlServerSchema.AssertContained(logger, superSetConnectionString, subSetConnectionString, false, "EdmMetadata");
       }
    }
 }

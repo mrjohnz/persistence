@@ -18,7 +18,7 @@ namespace Atlas.Persistence.EntityFramework.Tests
          var logger = A.Fake<IPersistenceLogger>();
          var configuration = new EntityFrameworkConfiguration();
 
-         configuration.ConnectionString(@"Data Source=.\SQLEXPRESS;Initial Catalog=AtlasPersistenceTests;Integrated Security=True;MultipleActiveResultSets=True");
+         configuration.ConnectionStringName("Persistence");
          configuration.ProviderName(EntityFrameworkConfiguration.SqlServerProviderName);
          configuration.RegisterEntitiesFromAssemblyOf<FooConfiguration>();
 
