@@ -7,6 +7,9 @@ namespace Atlas.Persistence.EntityFramework.Tests.UnitOfWork
 {
    using Atlas.Persistence.Testing;
 
+   using NUnit.Framework;
+
+   [TestFixture]
    public class PartitionedEntityQueryableTests : PartitionedEntityQueryableTestsBase
    {
       protected override IUnitOfWorkFactory CreateUnitOfWorkFactory()
