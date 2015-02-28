@@ -10,7 +10,7 @@ assembly_info:
   assembly_informational_version: '{version}'
 environment:
   COVERALLS_REPO_TOKEN:
-    secure: sBLrPPUU1n/RKnjIMhru+OiICUXFRriTaCoT0EzmBZSqlZHDueyjsqRvz5yqIUxC
+    secure: F+gDLaOoqAphUn/n4jHeO1WY3RMS0uHgBMN8D2G7STqZoaSPls00PpYmONGfDr4S
 services: mssql2012sp1
 cache: C:\Users\appveyor\AppData\Local\NuGet\Cache
 before_build:
@@ -29,7 +29,7 @@ before_test:
 - sqlcmd -S (local)\SQL2012SP1 -U sa -P Password12! -v database="AtlasPersistenceTests" -i database\ForeignKeys.sql
 test_script:
 - .\packages\OpenCover.4.5.3723\OpenCover.Console.exe -register:user -target:nunit-console.exe "-targetargs:""Atlas.Persistence.nunit"" /framework:net-4.0 /noshadow /out:ConsoleOut.log /err:ConsoleError.log" -filter:"+[Atlas.Persistence*]*" -filter:"-[Atlas.Persistence.Testing*]*" -output:openCoverCoverage.xml -returntargetcode
-- .\packages\coveralls.io.1.2.2\tools\coveralls.net.exe --debug --opencover openCoverCoverage.xml
+- .\packages\coveralls.io.1.2.2\tools\coveralls.net.exe --opencover openCoverCoverage.xml
 artifacts:
 - path: Atlas.Persistence*.nupkg
 - path: ConsoleOut.log
