@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Atlas.Persistence</id>
+    <version>$version$</version>
+    <title>Atlas.Persistence</title>
+    <authors>acraven</authors>
+    <owners>Epworth Consulting Ltd, acraven</owners>
+    <licenseUrl>https://github.com/acraven/persistence/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/acraven/persistence</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>An abstraction of the unit of work pattern</description>
+    <copyright>(c) Epworth Consulting Ltd</copyright>
+    <tags>Persistence ORM UnitOfWork</tags>
+  </metadata>
+</package>

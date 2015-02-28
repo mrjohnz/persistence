@@ -1,0 +1,6 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Default" />
+  <Config name="Default" binpathtype="Auto">
+    <assembly path="src\Atlas.Persistence.EntityFramework.Tests\bin\Release\Atlas.Persistence.EntityFramework.Tests.dll" />
+  </Config>
+</NUnitProject>

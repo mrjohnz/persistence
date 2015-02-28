@@ -1,0 +1,40 @@
+version: 0.0.{build}
+configuration: Release
+platform: Any CPU
+clone_depth: 1
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: xmyojx5EW+a9IqKX82pn0h5ktJgby1QhH/IMoE/15zOVdTxnByw+F6ardFLe087KJVLLEaluqPitA0N8BGF45A==
+services: mssql2012sp1
+before_build:
+- nuget restore Atlas.Persistence.sln
+- powershell .\UpdateTestConfigsForAppVeyor.ps1
+build:
+  project: Atlas.Persistence.sln
+  publish_nuget: true
+  include_nuget_references: true
+  verbosity: normal
+before_test:
+- sqlcmd -S (local)\SQL2012SP1 -U sa -P Password12! -v path="%APPVEYOR_BUILD_FOLDER%" -v database="AtlasPersistenceTests" -i database\Create.sql
+- sqlcmd -S (local)\SQL2012SP1 -U sa -P Password12! -v database="AtlasPersistenceTests" -i database\Tables.sql
+- sqlcmd -S (local)\SQL2012SP1 -U sa -P Password12! -v database="AtlasPersistenceTests" -i database\PrimaryKeys.sql
+- sqlcmd -S (local)\SQL2012SP1 -U sa -P Password12! -v database="AtlasPersistenceTests" -i database\UniqueKeys.sql
+- sqlcmd -S (local)\SQL2012SP1 -U sa -P Password12! -v database="AtlasPersistenceTests" -i database\ForeignKeys.sql
+test_script:
+- .\packages\OpenCover.4.5.3722\OpenCover.Console.exe -register:user -target:nunit-console.exe "-targetargs:""Atlas.Persistence.nunit"" /framework:net-4.0 /noshadow /out:ConsoleOut.log /err:ConsoleError.log" -filter:"+[Atlas.Persistence*]*" -filter:"-[Atlas.Persistence.Testing*]*" -output:openCoverCoverage.xml -returntargetcode
+- .\packages\coveralls.io.1.1.91\tools\coveralls.net.exe --opencover openCoverCoverage.xml
+artifacts:
+- path: Atlas.Persistence*.nupkg
+- path: ConsoleOut.log
+- path: ConsoleError.log
+deploy:
+- provider: NuGet
+  api_key:
+    secure: 4eGPThK/wSpRmfINQgAGQZD/e8r6FKRfp0SN4nB5/FBTHKJ1xIf/BK3/Iz5csDFm
+  artifact: /.*\.nupkg/
