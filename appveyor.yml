@@ -10,7 +10,7 @@ assembly_info:
   assembly_informational_version: '{version}'
 environment:
   COVERALLS_REPO_TOKEN:
-    secure: xmyojx5EW+a9IqKX82pn0h5ktJgby1QhH/IMoE/15zOVdTxnByw+F6ardFLe087KJVLLEaluqPitA0N8BGF45A==
+    secure: sBLrPPUU1n/RKnjIMhru+OiICUXFRriTaCoT0EzmBZSqlZHDueyjsqRvz5yqIUxC
 services: mssql2012sp1
 cache: C:\Users\appveyor\AppData\Local\NuGet\Cache
 before_build:
