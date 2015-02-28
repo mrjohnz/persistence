@@ -12,6 +12,7 @@ environment:
   COVERALLS_REPO_TOKEN:
     secure: xmyojx5EW+a9IqKX82pn0h5ktJgby1QhH/IMoE/15zOVdTxnByw+F6ardFLe087KJVLLEaluqPitA0N8BGF45A==
 services: mssql2012sp1
+cache: C:\Users\appveyor\AppData\Local\NuGet\Cache
 before_build:
 - nuget restore Atlas.Persistence.sln
 - powershell .\UpdateTestConfigsForAppVeyor.ps1
