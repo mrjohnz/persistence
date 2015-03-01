@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Atlas.Persistence.Log4Net</id>
+    <version>$version$</version>
+    <title>Atlas.Persistence.Log4Net</title>
+    <authors>acraven</authors>
+    <owners>Epworth Consulting Ltd, acraven</owners>
+    <licenseUrl>https://github.com/acraven/service-bus/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/acraven/service-bus</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A Log4Net implementation of the logger used in Atlas.Persistence</description>
+    <copyright>(c) Epworth Consulting Ltd</copyright>
+    <tags>Persistence Log4Net</tags>
+  </metadata>
+</package>
