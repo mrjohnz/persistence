@@ -14,7 +14,7 @@ namespace Atlas.Persistence.Testing
 
    using NUnit.Framework;
 
-   //TODO: Need to check that filter is restrictive by adding more than loading.
+   // TODO: Need to check that filter is restrictive by adding more than loading.
 
    public abstract class PartitionedEntityQueryableTestsBase
    {
@@ -35,7 +35,7 @@ namespace Atlas.Persistence.Testing
          comparers.Add<BaseClassPartitioned>(Compare);
          comparers.Add<SubClassPartitioned>(Compare);
 
-         entityComparer = comparers;
+         this.entityComparer = comparers;
       }
 
       [Test]
@@ -45,10 +45,10 @@ namespace Atlas.Persistence.Testing
          var fooGuid = Guid.NewGuid();
          long fooID;
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
-            var foo = new FooPartitioned() { Guid = fooGuid };
-            var baseClass = new BaseClassPartitioned() { Foo = foo, Guid = baseGuid };
+            var foo = new FooPartitioned { Guid = fooGuid };
+            var baseClass = new BaseClassPartitioned { Foo = foo, Guid = baseGuid };
 
             unitOfWork.Add(baseClass);
 
@@ -57,7 +57,7 @@ namespace Atlas.Persistence.Testing
             fooID = foo.ID;
          }
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             var baseClassByID = unitOfWork.Query<BaseClassPartitioned>().SingleOrDefault(c => c.Foo.ID == fooID);
             var baseClassByGuid = unitOfWork.Query<BaseClassPartitioned>().SingleOrDefault(c => c.Foo.Guid == fooGuid);
@@ -75,73 +75,73 @@ namespace Atlas.Persistence.Testing
       [Test]
       public void FooPartitionedWhereSingleInt()
       {
-         WhereFooLong<FooPartitioned>(1, c => c.ID);
+         this.WhereFooLong<FooPartitioned>(1, c => c.ID);
       }
 
       [Test]
       public void FooPartitionedWhereMultipleInt()
       {
-         WhereFooLong<FooPartitioned>(3, c => c.ID);
+         this.WhereFooLong<FooPartitioned>(3, c => c.ID);
       }
 
       [Test]
       public void FooPartitionedWhereSingleString()
       {
-         WhereFooGuid<FooPartitioned>(1);
+         this.WhereFooGuid<FooPartitioned>(1);
       }
 
       [Test]
       public void FooPartitionedWhereMultipleString()
       {
-         WhereFooGuid<FooPartitioned>(3);
+         this.WhereFooGuid<FooPartitioned>(3);
       }
 
       [Test]
       public void BaseClassPartitionedWhereSingleInt()
       {
-         WhereBaseClassLong<BaseClassPartitioned>(1, c => c.ID);
+         this.WhereBaseClassLong<BaseClassPartitioned>(1, c => c.ID);
       }
 
       [Test]
       public void BaseClassPartitionedWhereMultipleInt()
       {
-         WhereBaseClassLong<BaseClassPartitioned>(3, c => c.ID);
+         this.WhereBaseClassLong<BaseClassPartitioned>(3, c => c.ID);
       }
 
       [Test]
       public void BaseClassPartitionedWhereSingleString()
       {
-         WhereBaseClassGuid<BaseClassPartitioned>(1);
+         this.WhereBaseClassGuid<BaseClassPartitioned>(1);
       }
 
       [Test]
       public void BaseClassPartitionedWhereMultipleString()
       {
-         WhereBaseClassGuid<BaseClassPartitioned>(3);
+         this.WhereBaseClassGuid<BaseClassPartitioned>(3);
       }
 
       [Test]
       public void SubClassPartitionedWhereSingleInt()
       {
-         WhereBaseClassLong<SubClassPartitioned>(1, c => c.ID);
+         this.WhereBaseClassLong<SubClassPartitioned>(1, c => c.ID);
       }
 
       [Test]
       public void SubClassPartitionedWhereMultipleInt()
       {
-         WhereBaseClassLong<SubClassPartitioned>(3, c => c.ID);
+         this.WhereBaseClassLong<SubClassPartitioned>(3, c => c.ID);
       }
 
       [Test]
       public void SubClassPartitionedWhereSingleString()
       {
-         WhereBaseClassGuid<SubClassPartitioned>(1);
+         this.WhereBaseClassGuid<SubClassPartitioned>(1);
       }
 
       [Test]
       public void SubClassPartitionedWhereMultipleString()
       {
-         WhereBaseClassGuid<SubClassPartitioned>(3);
+         this.WhereBaseClassGuid<SubClassPartitioned>(3);
       }
 
       #endregion
@@ -151,109 +151,109 @@ namespace Atlas.Persistence.Testing
       [Test]
       public void WhereSingleInt()
       {
-         WhereFooLong<Foo>(1, c => c.ID);
+         this.WhereFooLong<Foo>(1, c => c.ID);
       }
 
       [Test]
       public void WhereMultipleInt()
       {
-         WhereFooLong<Foo>(3, c => c.ID);
+         this.WhereFooLong<Foo>(3, c => c.ID);
       }
 
       [Test]
       public void WhereSingleString()
       {
-         WhereFooGuid<Foo>(1);
+         this.WhereFooGuid<Foo>(1);
       }
 
       [Test]
       public void WhereMultipleString()
       {
-         WhereFooGuid<Foo>(3);
+         this.WhereFooGuid<Foo>(3);
       }
 
       [Test]
       public void WhereSingleIntEnum()
       {
-         WhereFooIntEnum<Foo>(1);
+         this.WhereFooIntEnum<Foo>(1);
       }
 
       [Test]
       public void WhereMultipleIntEnum()
       {
-         WhereFooIntEnum<Foo>(3);
+         this.WhereFooIntEnum<Foo>(3);
       }
 
       [Test]
       public void BaseClassWhereSingleInt()
       {
-         WhereBaseClassLong<BaseClass>(1, c => c.ID);
+         this.WhereBaseClassLong<BaseClass>(1, c => c.ID);
       }
 
       [Test]
       public void BaseClassWhereMultipleInt()
       {
-         WhereBaseClassLong<BaseClass>(3, c => c.ID);
+         this.WhereBaseClassLong<BaseClass>(3, c => c.ID);
       }
 
       [Test]
       public void BaseClassWhereSingleString()
       {
-         WhereBaseClassGuid<BaseClass>(1);
+         this.WhereBaseClassGuid<BaseClass>(1);
       }
 
       [Test]
       public void BaseClassWhereMultipleString()
       {
-         WhereBaseClassGuid<BaseClass>(3);
+         this.WhereBaseClassGuid<BaseClass>(3);
       }
 
       [Test]
       public void BaseClassWhereSingleIntEnum()
       {
-         WhereBaseClassIntEnum<BaseClass>(1);
+         this.WhereBaseClassIntEnum<BaseClass>(1);
       }
 
       [Test]
       public void BaseClassWhereMultipleIntEnum()
       {
-         WhereBaseClassIntEnum<BaseClass>(3);
+         this.WhereBaseClassIntEnum<BaseClass>(3);
       }
 
       [Test]
       public void SubClassWhereSingleInt()
       {
-         WhereBaseClassLong<SubClass>(1, c => c.ID);
+         this.WhereBaseClassLong<SubClass>(1, c => c.ID);
       }
 
       [Test]
       public void SubClassWhereMultipleInt()
       {
-         WhereBaseClassLong<SubClass>(3, c => c.ID);
+         this.WhereBaseClassLong<SubClass>(3, c => c.ID);
       }
 
       [Test]
       public void SubClassWhereSingleString()
       {
-         WhereBaseClassGuid<SubClass>(1);
+         this.WhereBaseClassGuid<SubClass>(1);
       }
 
       [Test]
       public void SubClassWhereMultipleString()
       {
-         WhereBaseClassGuid<SubClass>(3);
+         this.WhereBaseClassGuid<SubClass>(3);
       }
 
       [Test]
       public void SubClassWhereSingleIntEnum()
       {
-         WhereBaseClassIntEnum<SubClass>(1);
+         this.WhereBaseClassIntEnum<SubClass>(1);
       }
 
       [Test]
       public void SubClassWhereMultipleIntEnum()
       {
-         WhereBaseClassIntEnum<SubClass>(3);
+         this.WhereBaseClassIntEnum<SubClass>(3);
       }
 
       #endregion
@@ -297,13 +297,13 @@ namespace Atlas.Persistence.Testing
 
          Assert.AreEqual(number, foos.Count);
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             IList<T> all = unitOfWork.Query<T>().ToList();
 
             IList<T> result = unitOfWork.Query<T>().IsIn(idProperty, foos.Select(c => c.ID)).ToList();
 
-            entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
+            this.entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
          }
       }
 
@@ -314,13 +314,13 @@ namespace Atlas.Persistence.Testing
 
          Assert.AreEqual(number, foos.Count);
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             IList<T> all = unitOfWork.Query<T>().ToList();
 
             IList<T> result = unitOfWork.Query<T>().IsIn(idProperty, foos.Select(c => c.ID)).ToList();
 
-            entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
+            this.entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
          }
       }
 
@@ -331,11 +331,11 @@ namespace Atlas.Persistence.Testing
 
          Assert.AreEqual(number, foos.Count);
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             IList<T> result = unitOfWork.Query<T>().IsIn(c => c.Guid, foos.Select(c => c.Guid)).ToList();
 
-            entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
+            this.entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
          }
       }
 
@@ -346,11 +346,11 @@ namespace Atlas.Persistence.Testing
 
          Assert.AreEqual(number, foos.Count);
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             IList<T> result = unitOfWork.Query<T>().IsIn(c => c.Guid, foos.Select(c => c.Guid)).ToList();
 
-            entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
+            this.entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
          }
       }
 
@@ -361,11 +361,11 @@ namespace Atlas.Persistence.Testing
 
          Assert.AreEqual(number, foos.Count);
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             IList<T> result = unitOfWork.Query<T>().IsIn(c => c.IntEnum, foos.Select(c => c.IntEnum)).ToList();
 
-            entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
+            this.entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
          }
       }
 
@@ -376,11 +376,11 @@ namespace Atlas.Persistence.Testing
 
          Assert.AreEqual(number, foos.Count);
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             IList<T> result = unitOfWork.Query<T>().IsIn(c => c.IntEnum, foos.Select(c => c.IntEnum)).ToList();
 
-            entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
+            this.entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
          }
       }
 
@@ -389,7 +389,7 @@ namespace Atlas.Persistence.Testing
       {
          var items = new List<T>();
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             for (int i = 1; i <= number; i++)
             {
@@ -410,7 +410,7 @@ namespace Atlas.Persistence.Testing
       {
          var items = new List<T>();
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             for (int i = 1; i <= number; i++)
             {

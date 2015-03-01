@@ -6,6 +6,7 @@
 namespace Atlas.Persistence.Testing.Entities
 {
    using System;
+   using System.ComponentModel.DataAnnotations;
 
    public enum IntEnum
    {
@@ -42,6 +43,7 @@ namespace Atlas.Persistence.Testing.Entities
 
       public virtual int? IntValue { get; set; }
 
+      [StringLength(50)]
       public virtual string StringValue { get; set; }
    }
 }

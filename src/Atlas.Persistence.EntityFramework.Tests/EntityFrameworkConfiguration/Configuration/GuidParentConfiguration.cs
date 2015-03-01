@@ -3,7 +3,7 @@
 //   © Epworth Consulting Ltd.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Atlas.Domain.Persistence.EntityFramework.Tests
+namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration.Configuration
 {
    using System.Data.Entity.ModelConfiguration;
 
@@ -16,8 +16,6 @@ namespace Atlas.Domain.Persistence.EntityFramework.Tests
          this.ToTable("GuidParent");
          this.HasKey(c => c.Guid);
          this.Property(c => c.Guid).HasColumnName("GuidParentID");
-
-         this.Property(c => c.Name).HasMaxLength(50);
 
          this.Property(c => c.CreatedDateTime).HasColumnType("datetime2");
       }

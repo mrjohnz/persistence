@@ -3,7 +3,7 @@
 //   © Epworth Consulting Ltd.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Atlas.Domain.Persistence.EntityFramework.Tests
+namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration.Configuration
 {
    using System.Data.Entity.ModelConfiguration;
 

@@ -3,7 +3,7 @@
 //   © Epworth Consulting Ltd.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Atlas.Persistence.EntityFramework.Tests.UnitOfWork
+namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration
 {
    using Atlas.Persistence.Testing;
 

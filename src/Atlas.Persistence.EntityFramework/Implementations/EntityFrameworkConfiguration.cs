@@ -8,7 +8,6 @@ namespace Atlas.Persistence.EntityFramework.Implementations
    using System;
    using System.Collections.Generic;
    using System.Configuration;
-   using System.Data;
    using System.Data.Common;
    using System.Data.Entity;
    using System.Data.Entity.Core.Objects;
@@ -23,25 +22,21 @@ namespace Atlas.Persistence.EntityFramework.Implementations
    {
       public const string SqlServerProviderName = "System.Data.SqlClient";
 
-      private readonly Dictionary<Type, Type> registeredEntities;
+      private readonly IList<Type> registeredEntities;
       private readonly DbModelBuilder modelBuilder;
 
       private string providerName;
       private DbProviderFactory providerFactory;
       private string connectionString;
+      private DbCompiledModel compiledModel;
 
       public EntityFrameworkConfiguration()
       {
-         this.registeredEntities = new Dictionary<Type, Type>();
+         this.registeredEntities = new List<Type>();
 
          this.modelBuilder = new DbModelBuilder();
          this.modelBuilder.Conventions.Remove<PluralizingEntitySetNameConvention>();
          this.modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-      }
-
-      public bool IsEntityRegistered(Type entityType)
-      {
-         return this.registeredEntities.ContainsKey(entityType);
       }
 
       // ReSharper disable once ParameterHidesMember
@@ -137,7 +132,7 @@ namespace Atlas.Persistence.EntityFramework.Implementations
 
          foreach (var entity in entities)
          {
-            this.RegisterEntity(entity);
+            this.registeredEntities.Add(entity);
          }
 
          return this;
@@ -159,40 +154,16 @@ namespace Atlas.Persistence.EntityFramework.Implementations
          }
       }
 
-      public void CreateSchema(IDbConnection connection)
-      {
-         throw new NotSupportedException();
-      }
-
-      public DbCompiledModel CreateModel()
+      public ObjectContext CreateObjectContext()
       {
          var connection = this.CreateConnection();
 
-         return this.modelBuilder.Build(connection).Compile();
-      }
-
-      public DbConnection CreateConnection()
-      {
-         if (this.providerFactory == null)
+         if (this.compiledModel == null)
          {
-            throw new InvalidOperationException("ProviderFactory cannot be determined");
+            this.compiledModel = this.modelBuilder.Build(connection).Compile();
          }
 
-         if (this.connectionString == null)
-         {
-            throw new InvalidOperationException("ConnectionString must be specified");
-         }
-
-         var connection = this.providerFactory.CreateConnection();
-
-         if (connection == null)
-         {
-            throw new InvalidOperationException("Failed to create connection");
-         }
-
-         connection.ConnectionString = this.connectionString;
-
-         return connection;
+         return this.compiledModel.CreateObjectContext<ObjectContext>(connection);
       }
 
       private static void PrepareRegistration(Type entity, List<Type> entities)
@@ -230,9 +201,28 @@ namespace Atlas.Persistence.EntityFramework.Implementations
          entities.Add(entity);
       }
 
-      private ObjectContext CreateObjectContext()
+      private DbConnection CreateConnection()
       {
-         return this.CreateModel().CreateObjectContext<ObjectContext>(this.CreateConnection());
+         if (this.providerFactory == null)
+         {
+            throw new InvalidOperationException("ProviderFactory cannot be determined");
+         }
+
+         if (this.connectionString == null)
+         {
+            throw new InvalidOperationException("ConnectionString must be specified");
+         }
+
+         var connection = this.providerFactory.CreateConnection();
+
+         if (connection == null)
+         {
+            throw new InvalidOperationException("Failed to create connection");
+         }
+
+         connection.ConnectionString = this.connectionString;
+
+         return connection;
       }
 
       // ReSharper disable UnusedMember.Local
@@ -255,16 +245,6 @@ namespace Atlas.Persistence.EntityFramework.Implementations
          var configuration = new TComplexConfiguration();
 
          this.modelBuilder.Configurations.Add(configuration);
-      }
-
-      private void RegisterEntity(Type entity)
-      {
-         if (this.IsEntityRegistered(entity))
-         {
-            throw new InvalidOperationException(string.Format("Entity '{0}' is already registered.", entity.Name));
-         }
-
-         this.registeredEntities.Add(entity, null);
       }
    }
 }

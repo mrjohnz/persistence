@@ -7,23 +7,21 @@ namespace Atlas.Persistence.EntityFramework.Implementations
 {
    using System;
    using System.Data.Entity.Core;
+   using System.Data.Entity.Core.Metadata.Edm;
    using System.Data.Entity.Core.Objects;
-   using System.Data.Entity.Infrastructure;
-   using System.Globalization;
+   using System.Linq;
 
    using Atlas.Persistence;
 
    public class EntityFrameworkUnitOfWork : IUnitOfWork
    {
       private readonly Guid unitOfWorkGuid;
-      private readonly IEntityFrameworkPersistenceConfiguration configuration;
       private readonly ObjectContext objectContext;
       private readonly IPersistenceLogger persistenceLogger;
 
       private bool isDisposed;
 
       private EntityFrameworkUnitOfWork(
-         IEntityFrameworkPersistenceConfiguration configuration,
          ObjectContext objectContext,
          IPersistenceLogger persistenceLogger)
       {
@@ -31,9 +29,7 @@ namespace Atlas.Persistence.EntityFramework.Implementations
          ThrowIf.ArgumentIsNull(persistenceLogger, "persistenceLogger");
 
          this.unitOfWorkGuid = Guid.NewGuid();
-         this.configuration = configuration;
          this.objectContext = objectContext;
-
          this.objectContext.ContextOptions.LazyLoadingEnabled = true;
          this.objectContext.ContextOptions.ProxyCreationEnabled = true;
 
@@ -52,7 +48,8 @@ namespace Atlas.Persistence.EntityFramework.Implementations
       {
          ThrowIf.ArgumentIsNull(entity, "entity");
 
-         this.objectContext.AddObject(this.GetEntitySetName(this.GetRootType(typeof(TEntity))), entity);
+         Type baseType;
+         this.objectContext.AddObject(this.GetEntitySetName<TEntity>(out baseType), entity);
       }
 
       public void Remove<TEntity>(TEntity entity)
@@ -68,7 +65,8 @@ namespace Atlas.Persistence.EntityFramework.Implementations
       {
          ThrowIf.ArgumentIsNull(entity, "entity");
 
-         this.objectContext.AttachTo(this.GetEntitySetName(this.GetRootType(typeof(TEntity))), entity);
+         Type baseType;
+         this.objectContext.AttachTo(this.GetEntitySetName<TEntity>(out baseType), entity);
       }
 
       public void Detach<TEntity>(TEntity entity)
@@ -85,21 +83,17 @@ namespace Atlas.Persistence.EntityFramework.Implementations
       public IEntityQueryable<TEntity> Query<TEntity>()
          where TEntity : class
       {
-         var rootType = this.GetRootType(typeof(TEntity));
-         ObjectQuery<TEntity> queryable;
+         Type rootType;
+         var entitySetName = this.GetEntitySetName<TEntity>(out rootType);
 
          if (rootType == typeof(TEntity))
          {
-            queryable = new ObjectQuery<TEntity>(this.GetEntitySetName(typeof(TEntity)), this.objectContext);
-         }
-         else
-         {
-            var commandText = string.Format("OFTYPE(({0}),[{1}].[{2}])", this.GetEntitySetName(rootType), typeof(TEntity).Namespace, typeof(TEntity).Name);
-
-            queryable = new ObjectQuery<TEntity>(commandText, this.objectContext);
+            return new EntityQueryable<TEntity>(new ObjectQuery<TEntity>(entitySetName, this.objectContext));
          }
 
-         return new EntityQueryable<TEntity>(queryable);
+         var commandText = string.Format("OFTYPE(({0}),[{1}].[{2}])", entitySetName, typeof(TEntity).Namespace, typeof(TEntity).Name);
+
+         return new EntityQueryable<TEntity>(new ObjectQuery<TEntity>(commandText, this.objectContext));
       }
 
       public TEntity Get<TEntity, TKey>(TKey key) where TEntity : class where TKey : struct
@@ -147,33 +141,28 @@ namespace Atlas.Persistence.EntityFramework.Implementations
          GC.SuppressFinalize(this);
       }
 
-      private string GetEntitySetName(Type type)
+      // TODO: Cache these in a dictionary
+      private string GetEntitySetName<TEntity>(out Type rootType)
       {
-         return string.Format(CultureInfo.InvariantCulture, "{0}.{1}", this.objectContext.DefaultContainerName, type.Name);
-      }
+         var type = typeof(TEntity);
 
-      private Type GetRootType(Type entityType)
-      {
-         var type = entityType;
-         Type rootType = null;
+         var container = this.objectContext.MetadataWorkspace.GetEntityContainer(this.objectContext.DefaultContainerName, DataSpace.CSpace);
+         var baseEntitySets = container.BaseEntitySets.Select(c => new { c.ElementType, c.Name }).ToArray();
 
          while (type != null && type != typeof(object))
          {
-            // Set rootType as the least deep Type in the heirarchy that is registered
-            if (this.configuration.IsEntityRegistered(type))
+            var entitySet = baseEntitySets.SingleOrDefault(c => c.ElementType.Name == type.Name);
+
+            if (entitySet != null)
             {
                rootType = type;
+               return entitySet.Name;
             }
 
             type = type.BaseType;
          }
 
-         if (rootType == null)
-         {
-            throw new InvalidOperationException(string.Format("Entity '{0}' has not been registered.", entityType.Name));
-         }
-
-         return rootType;
+         throw new InvalidOperationException(string.Format("Entity '{0}' has not been registered.", typeof(TEntity).Name));
       }
 
       private void AssertNotDisposed()
@@ -209,7 +198,6 @@ namespace Atlas.Persistence.EntityFramework.Implementations
       public class Factory : IUnitOfWorkFactory
       {
          private readonly IEntityFrameworkPersistenceConfiguration configuration;
-         private readonly DbCompiledModel model;
          private readonly IPersistenceLogger persistenceLogger;
 
          public Factory(
@@ -220,17 +208,14 @@ namespace Atlas.Persistence.EntityFramework.Implementations
             ThrowIf.ArgumentIsNull(persistenceLogger, "persistenceLogger");
 
             this.configuration = configuration;
-            this.model = this.configuration.CreateModel();
             this.persistenceLogger = persistenceLogger;
          }
 
          public IUnitOfWork Create()
          {
-            var connection = this.configuration.CreateConnection();
-            var objectContext = this.model.CreateObjectContext<ObjectContext>(connection);
+            var objectContext = this.configuration.CreateObjectContext();
 
             return new EntityFrameworkUnitOfWork(
-               this.configuration,
                objectContext,
                this.persistenceLogger);
          }

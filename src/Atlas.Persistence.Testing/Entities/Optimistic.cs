@@ -6,11 +6,13 @@
 namespace Atlas.Persistence.Testing.Entities
 {
    using System;
+   using System.ComponentModel.DataAnnotations;
 
    public class Optimistic
    {
       public virtual long ID { get; protected set; }
 
+      [StringLength(50)]
       public virtual string StringValue { get; set; }
 
       public virtual int? IntValue { get; set; }

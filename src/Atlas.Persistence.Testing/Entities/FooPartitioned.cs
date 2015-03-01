@@ -1,6 +1,12 @@
-﻿namespace Atlas.Persistence.Testing.Entities
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FooPartitioned.cs" company="Epworth Consulting Ltd.">
+//   © Epworth Consulting Ltd.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+namespace Atlas.Persistence.Testing.Entities
 {
    using System;
+   using System.ComponentModel.DataAnnotations;
 
    public class FooPartitioned : IFoo
    {
@@ -18,6 +24,7 @@
 
       public virtual int? IntValue { get; set; }
 
+      [StringLength(50)]
       public virtual string StringValue { get; set; }
    }
 }

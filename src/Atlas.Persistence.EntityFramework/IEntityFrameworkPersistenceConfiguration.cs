@@ -5,27 +5,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Atlas.Persistence.EntityFramework
 {
-   using System;
-   using System.Data.Common;
-   using System.Data.Entity.Infrastructure;
-   using System.Reflection;
+   using System.Data.Entity.Core.Objects;
 
    public interface IEntityFrameworkPersistenceConfiguration : IPersistenceConfiguration
    {
-      bool IsEntityRegistered(Type entityType);
-
-      IEntityFrameworkPersistenceConfiguration ProviderName(string providerName);
-
-      IEntityFrameworkPersistenceConfiguration ConnectionString(string connectionString);
-
-      IEntityFrameworkPersistenceConfiguration ConnectionStringName(string connectionStringName);
-
-      IEntityFrameworkPersistenceConfiguration RegisterEntitiesFromAssemblyOf<T>();
-
-      IEntityFrameworkPersistenceConfiguration RegisterEntitiesFromAssembly(Assembly assembly);
-
-      DbCompiledModel CreateModel();
-
-      DbConnection CreateConnection();
+      ObjectContext CreateObjectContext();
    }
 }

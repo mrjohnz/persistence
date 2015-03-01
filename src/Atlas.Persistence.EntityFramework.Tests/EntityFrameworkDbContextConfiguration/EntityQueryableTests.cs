@@ -1,16 +1,16 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PartitionedEntityQueryableTests.cs" company="Epworth Consulting Ltd.">
+// <copyright file="EntityQueryableTests.cs" company="Epworth Consulting Ltd.">
 //   © Epworth Consulting Ltd.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Atlas.Persistence.EntityFramework.Tests.UnitOfWork
+namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkDbContextConfiguration
 {
    using Atlas.Persistence.Testing;
 
    using NUnit.Framework;
 
    [TestFixture]
-   public class PartitionedEntityQueryableTests : PartitionedEntityQueryableTestsBase
+   public class EntityQueryableTests : EntityQueryableTestsBase
    {
       protected override IUnitOfWorkFactory CreateUnitOfWorkFactory()
       {

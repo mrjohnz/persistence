@@ -3,15 +3,13 @@
 //     © Epworth Consulting Ltd.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Atlas.Persistence.EntityFramework.Tests
+namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkDbContextConfiguration
 {
    using System.Configuration;
 
-   using Atlas.Domain.Persistence.EntityFramework.Tests;
    using Atlas.Persistence.EntityFramework.Implementations;
+   using Atlas.Persistence.Log4Net;
    using Atlas.Persistence.Testing.SqlServer;
-
-   using FakeItEasy;
 
    using NUnit.Framework;
 
@@ -27,15 +25,13 @@ namespace Atlas.Persistence.EntityFramework.Tests
 
          SqlServerSchema.Remove(subSetConnectionString);
 
-         var configuration = new EntityFrameworkConfiguration();
-         var logger = A.Fake<IPersistenceLogger>();
+         var configuration = new EntityFrameworkDbContextConfiguration<CompareContext>(connectionStringOrName => new CompareContext(connectionStringOrName));
+         var logger = Log4NetPersistenceLogger.FromConfig();
 
          configuration.ConnectionString(subSetConnectionString);
-         configuration.ProviderName(EntityFrameworkConfiguration.SqlServerProviderName);
-         configuration.RegisterEntitiesFromAssemblyOf<FooConfiguration>();
          configuration.CreateSchema();
-
-         SqlServerSchema.AssertContained(logger, superSetConnectionString, subSetConnectionString, false, "EdmMetadata");
+         
+         SqlServerSchema.AssertContained(logger, superSetConnectionString, subSetConnectionString, false, "__MigrationHistory");
       }
    }
 }

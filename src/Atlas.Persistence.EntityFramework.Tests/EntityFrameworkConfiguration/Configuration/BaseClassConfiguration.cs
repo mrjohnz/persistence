@@ -1,6 +1,12 @@
-namespace Atlas.Domain.Persistence.EntityFramework.Tests
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BaseClassConfiguration.cs" company="Epworth Consulting Ltd.">
+//   © Epworth Consulting Ltd.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration.Configuration
 {
    using System.Data.Entity.ModelConfiguration;
+
    using Atlas.Persistence.Testing.Entities;
 
    public class BaseClassConfiguration : EntityTypeConfiguration<BaseClass>

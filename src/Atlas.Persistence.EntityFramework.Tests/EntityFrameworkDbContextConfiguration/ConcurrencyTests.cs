@@ -1,16 +1,16 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EntityQueryableTests.cs" company="Epworth Consulting Ltd.">
+// <copyright file="ConcurrencyTests.cs" company="Epworth Consulting Ltd.">
 //   © Epworth Consulting Ltd.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Atlas.Persistence.EntityFramework.Tests.UnitOfWork
+namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkDbContextConfiguration
 {
    using Atlas.Persistence.Testing;
 
    using NUnit.Framework;
 
    [TestFixture]
-   public class EntityQueryableTests : EntityQueryableTestsBase
+   public class ConcurrencyTests : ConcurrencyTestsBase
    {
       protected override IUnitOfWorkFactory CreateUnitOfWorkFactory()
       {

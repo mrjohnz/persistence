@@ -42,10 +42,10 @@ namespace Atlas.Persistence.Testing
          Guid fooGuid = Guid.NewGuid();
          long fooID;
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
-            Foo foo = new Foo() { Guid = fooGuid };
-            BaseClass baseClass = new BaseClass() { Foo = foo, Guid = baseGuid };
+            Foo foo = new Foo { Guid = fooGuid };
+            BaseClass baseClass = new BaseClass { Foo = foo, Guid = baseGuid };
 
             unitOfWork.Add(baseClass);
 
@@ -54,7 +54,7 @@ namespace Atlas.Persistence.Testing
             fooID = foo.ID;
          }
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             BaseClass baseClassByID = unitOfWork.Query<BaseClass>().SingleOrDefault(c => c.Foo.ID == fooID);
             BaseClass baseClassByGuid = unitOfWork.Query<BaseClass>().SingleOrDefault(c => c.Foo.Guid == fooGuid);
@@ -163,11 +163,11 @@ namespace Atlas.Persistence.Testing
 
          Assert.AreEqual(number, foos.Count);
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             IList<T> result = unitOfWork.Query<T>().IsIn(idProperty, foos.Select(c => c.ID)).ToList();
 
-            entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
+            this.entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
          }
       }
 
@@ -178,11 +178,11 @@ namespace Atlas.Persistence.Testing
 
          Assert.AreEqual(number, foos.Count);
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             IList<T> result = unitOfWork.Query<T>().IsIn(idProperty, foos.Select(c => c.ID)).ToList();
 
-            entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
+            this.entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
          }
       }
 
@@ -193,11 +193,11 @@ namespace Atlas.Persistence.Testing
 
          Assert.AreEqual(number, foos.Count);
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             IList<T> result = unitOfWork.Query<T>().IsIn(c => c.Guid, foos.Select(c => c.Guid)).ToList();
 
-            entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
+            this.entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
          }
       }
 
@@ -208,11 +208,11 @@ namespace Atlas.Persistence.Testing
 
          Assert.AreEqual(number, foos.Count);
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             IList<T> result = unitOfWork.Query<T>().IsIn(c => c.Guid, foos.Select(c => c.Guid)).ToList();
 
-            entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
+            this.entityComparer.CompareList(foos.OrderBy(c => c.ID), result.OrderBy(c => c.ID));
          }
       }
 
@@ -221,11 +221,11 @@ namespace Atlas.Persistence.Testing
       {
          List<T> items = new List<T>();
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             for (int i = 1; i <= number; i++)
             {
-               T item = new T() { Guid = Guid.NewGuid() };
+               T item = new T { Guid = Guid.NewGuid() };
 
                unitOfWork.Add(item);
                items.Add(item);
@@ -242,11 +242,11 @@ namespace Atlas.Persistence.Testing
       {
          List<T> items = new List<T>();
 
-         using (IUnitOfWork unitOfWork = unitOfWorkFactory.Create())
+         using (IUnitOfWork unitOfWork = this.unitOfWorkFactory.Create())
          {
             for (int i = 1; i <= number; i++)
             {
-               T item = new T() { Guid = Guid.NewGuid() };
+               T item = new T { Guid = Guid.NewGuid() };
 
                unitOfWork.Add(item);
                items.Add(item);
