@@ -29,6 +29,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Atlas.Persistence.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="ConcurrencyException.cs" />
     <Compile Include="IEntityQueryable.cs" />
@@ -43,6 +49,11 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Atlas.Persistence.snk">
+      <Link>Atlas.Persistence.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
