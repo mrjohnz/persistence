@@ -72,6 +72,10 @@
       <Project>{62CE261E-6B01-4A5B-8A97-2F5014BB356F}</Project>
       <Name>Atlas.Persistence.EntityFramework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Atlas.Persistence.Testing.SqlServer\Atlas.Persistence.Testing.SqlServer.csproj">
+      <Project>{37E8DA6C-C3DC-4B5F-8038-7B7E07A02990}</Project>
+      <Name>Atlas.Persistence.Testing.SqlServer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Atlas.Persistence.Testing\Atlas.Persistence.Testing.csproj">
       <Project>{98BA5357-8897-4003-862E-10F1D3370A76}</Project>
       <Name>Atlas.Persistence.Testing</Name>

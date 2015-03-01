@@ -3,12 +3,12 @@
 //   © Epworth Consulting Ltd.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Atlas.Persistence.Testing
+namespace Atlas.Persistence.Testing.SqlServer
 {
    using System;
    using System.Collections.Generic;
-   using System.Linq;
    using System.Data.SqlClient;
+   using System.Linq;
    using System.Linq.Expressions;
 
    using Microsoft.SqlServer.Management.Smo;
@@ -17,6 +17,16 @@ namespace Atlas.Persistence.Testing
 
    public static class SqlServerSchema
    {
+      public static void Prepare(string connectionString)
+      {
+         Server server;
+         string databaseName;
+         Remove(connectionString, out server, out databaseName);
+
+         var database = new Database(server, databaseName);
+         database.Create();
+      }
+
       public static void Remove(string connectionString)
       {
          Server server;

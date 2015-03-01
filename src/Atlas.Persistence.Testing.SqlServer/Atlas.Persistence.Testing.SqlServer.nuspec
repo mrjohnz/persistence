@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Atlas.Persistence.Testing.SqlServer</id>
+    <version>$version$</version>
+    <title>Atlas.Persistence.Testing.SqlServer</title>
+    <authors>acraven</authors>
+    <owners>Epworth Consulting Ltd, acraven</owners>
+    <licenseUrl>https://github.com/acraven/persistence/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/acraven/persistence</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SQL Server utilities to support Atlas.Persistence</description>
+    <copyright>(c) Epworth Consulting Ltd</copyright>
+    <tags>Persistence SqlServer</tags>
+  </metadata>
+</package>

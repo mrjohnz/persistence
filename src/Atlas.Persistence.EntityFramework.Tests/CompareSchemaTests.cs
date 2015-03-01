@@ -9,7 +9,7 @@ namespace Atlas.Persistence.EntityFramework.Tests
 
    using Atlas.Domain.Persistence.EntityFramework.Tests;
    using Atlas.Persistence.EntityFramework.Implementations;
-   using Atlas.Persistence.Testing;
+   using Atlas.Persistence.Testing.SqlServer;
 
    using FakeItEasy;
 
