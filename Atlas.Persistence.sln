@@ -24,6 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FC704F
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas.Persistence.Log4Net", "src\Atlas.Persistence.Log4Net\Atlas.Persistence.Log4Net.csproj", "{73CEF6A5-39C9-475C-8276-FCC13CF70569}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas.Persistence.Testing.SqlServer", "src\Atlas.Persistence.Testing.SqlServer\Atlas.Persistence.Testing.SqlServer.csproj", "{37E8DA6C-C3DC-4B5F-8038-7B7E07A02990}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +50,14 @@ Global
 		{98BA5357-8897-4003-862E-10F1D3370A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98BA5357-8897-4003-862E-10F1D3370A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98BA5357-8897-4003-862E-10F1D3370A76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73CEF6A5-39C9-475C-8276-FCC13CF70569}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73CEF6A5-39C9-475C-8276-FCC13CF70569}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73CEF6A5-39C9-475C-8276-FCC13CF70569}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73CEF6A5-39C9-475C-8276-FCC13CF70569}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37E8DA6C-C3DC-4B5F-8038-7B7E07A02990}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E8DA6C-C3DC-4B5F-8038-7B7E07A02990}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37E8DA6C-C3DC-4B5F-8038-7B7E07A02990}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37E8DA6C-C3DC-4B5F-8038-7B7E07A02990}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
