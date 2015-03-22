@@ -11,35 +11,36 @@ namespace Atlas.Persistence.EntityFramework.Implementations
    using System.Data.Entity.Core.Objects;
    using System.Linq;
 
+   using Atlas.Core.Logging;
    using Atlas.Persistence;
 
    public class EntityFrameworkUnitOfWork : IUnitOfWork
    {
       private readonly Guid unitOfWorkGuid;
       private readonly ObjectContext objectContext;
-      private readonly IPersistenceLogger persistenceLogger;
+      private readonly ILogger logger;
 
       private bool isDisposed;
 
       private EntityFrameworkUnitOfWork(
          ObjectContext objectContext,
-         IPersistenceLogger persistenceLogger)
+         ILogger logger)
       {
          ThrowIf.ArgumentIsNull(objectContext, "objectContext");
-         ThrowIf.ArgumentIsNull(persistenceLogger, "persistenceLogger");
+         ThrowIf.ArgumentIsNull(logger, "logger");
 
          this.unitOfWorkGuid = Guid.NewGuid();
          this.objectContext = objectContext;
          this.objectContext.ContextOptions.LazyLoadingEnabled = true;
          this.objectContext.ContextOptions.ProxyCreationEnabled = true;
 
-         this.persistenceLogger = persistenceLogger;
-         this.persistenceLogger.LogDebug("EntityFrameworkUnitOfWork(...) '{0}'", this.unitOfWorkGuid);
+         this.logger = logger;
+         this.logger.LogDebug("EntityFrameworkUnitOfWork(...) '{0}'", this.unitOfWorkGuid);
       }
 
       ~EntityFrameworkUnitOfWork()
       {
-         this.persistenceLogger.LogWarning("Dispose method of EntityFrameworkUnitOfWork '{0}' has not been called explicitly", this.unitOfWorkGuid);
+         this.logger.LogWarning("Dispose method of EntityFrameworkUnitOfWork '{0}' has not been called explicitly", this.unitOfWorkGuid);
          this.Dispose(false);
       }
 
@@ -182,11 +183,11 @@ namespace Atlas.Persistence.EntityFramework.Implementations
 
          if (disposing)
          {
-            this.persistenceLogger.LogDebug("EntityFrameworkUnitOfWork.Dispose() '{0}'", this.unitOfWorkGuid);
+            this.logger.LogDebug("EntityFrameworkUnitOfWork.Dispose() '{0}'", this.unitOfWorkGuid);
 
             if (this.objectContext != null)
             {
-               this.persistenceLogger.LogDebug("Disposing of ObjectContext");
+               this.logger.LogDebug("Disposing of ObjectContext");
 
                this.objectContext.Dispose();
             }
@@ -198,17 +199,17 @@ namespace Atlas.Persistence.EntityFramework.Implementations
       public class Factory : IUnitOfWorkFactory
       {
          private readonly IEntityFrameworkPersistenceConfiguration configuration;
-         private readonly IPersistenceLogger persistenceLogger;
+         private readonly ILogger logger;
 
          public Factory(
             IEntityFrameworkPersistenceConfiguration configuration,
-            IPersistenceLogger persistenceLogger)
+            ILogger logger)
          {
             ThrowIf.ArgumentIsNull(configuration, "configuration");
-            ThrowIf.ArgumentIsNull(persistenceLogger, "persistenceLogger");
+            ThrowIf.ArgumentIsNull(logger, "logger");
 
             this.configuration = configuration;
-            this.persistenceLogger = persistenceLogger;
+            this.logger = logger;
          }
 
          public IUnitOfWork Create()
@@ -217,7 +218,7 @@ namespace Atlas.Persistence.EntityFramework.Implementations
 
             return new EntityFrameworkUnitOfWork(
                objectContext,
-               this.persistenceLogger);
+               this.logger);
          }
       }
    }

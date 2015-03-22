@@ -11,6 +11,8 @@ namespace Atlas.Persistence.Testing.SqlServer
    using System.Linq;
    using System.Linq.Expressions;
 
+   using Atlas.Core.Logging;
+
    using Microsoft.SqlServer.Management.Smo;
 
    using NUnit.Framework;
@@ -37,9 +39,9 @@ namespace Atlas.Persistence.Testing.SqlServer
       /// <summary>
       /// Asserts that the Sub-set schema is contained within the Super-set schema
       /// </summary>
-      public static void AssertContained(IPersistenceLogger persistenceLogger, string superSetConnectionString, string subSetConnectionString, bool compareIndexes, params string[] ignoreTables)
+      public static void AssertContained(ILogger logger, string superSetConnectionString, string subSetConnectionString, bool compareIndexes, params string[] ignoreTables)
       {
-         var logger = new MismatchLogger(persistenceLogger);
+         var mismatchLogger = new MismatchLogger(logger);
 
          var superSet = GetDatabase(superSetConnectionString);
          var subSet = GetDatabase(subSetConnectionString);
@@ -52,19 +54,19 @@ namespace Atlas.Persistence.Testing.SqlServer
          {
             if (ignoreTables.Contains(subSetTable.Name))
             {
-               logger.LogInfo("Ignoring table '{0}'", subSetTable.Name);
+               mismatchLogger.LogInfo("Ignoring table '{0}'", subSetTable.Name);
 
                continue;
             }
 
             if (!superSet.Tables.Contains(subSetTable.Name))
             {
-               logger.LogWarning("Table '{0}' does not exist in '{1}'", subSetTable.Name, superSet.Name);
+               mismatchLogger.LogWarning("Table '{0}' does not exist in '{1}'", subSetTable.Name, superSet.Name);
 
                continue;
             }
 
-            logger.LogInfo("Comparing table '{0}'", subSetTable.Name);
+            mismatchLogger.LogInfo("Comparing table '{0}'", subSetTable.Name);
 
             var superSetTable = superSet.Tables[subSetTable.Name];
             var superSetColumns = superSetTable.Columns.Cast<Column>().Where(c => !c.Name.EndsWith("NullBuster")).ToDictionary(c => c.Name);
@@ -72,7 +74,7 @@ namespace Atlas.Persistence.Testing.SqlServer
 
             if (subSetColumns.Count != superSetColumns.Count)
             {
-               logger.LogWarning(
+               mismatchLogger.LogWarning(
                   "Table '{0}' in '{1}' has '{2}' columns compared to '{3}' in '{4}'",
                   subSetTable.Name,
                   subSet.Name,
@@ -85,7 +87,7 @@ namespace Atlas.Persistence.Testing.SqlServer
             {
                if (!subSetColumns.ContainsKey(superSetColumn.Key))
                {
-                  logger.LogWarning("Column '{0}' does not exist in '{1}' in '{2}'", superSetColumn.Key, subSetTable.Name, subSet.Name);
+                  mismatchLogger.LogWarning("Column '{0}' does not exist in '{1}' in '{2}'", superSetColumn.Key, subSetTable.Name, subSet.Name);
                }
             }
 
@@ -93,21 +95,21 @@ namespace Atlas.Persistence.Testing.SqlServer
             {
                if (!superSetColumns.ContainsKey(subSetColumn.Key))
                {
-                  logger.LogWarning("Column '{0}' does not exist in '{1}' in '{2}'", subSetColumn.Key, superSetTable.Name, superSet.Name);
+                  mismatchLogger.LogWarning("Column '{0}' does not exist in '{1}' in '{2}'", subSetColumn.Key, superSetTable.Name, superSet.Name);
 
                   continue;
                }
 
                var superSetColumn = superSetColumns[subSetColumn.Key];
 
-               Compare(logger, subSetTable, subSetColumn.Value, superSetColumn, c => c.DataType.SqlDataType, sqlDataTypeComparer);
-               Compare(logger, subSetTable, subSetColumn.Value, superSetColumn, c => c.DataType.MaximumLength, intComparer);
-               Compare(logger, subSetTable, subSetColumn.Value, superSetColumn, c => c.DataType.NumericPrecision, intComparer);
-               Compare(logger, subSetTable, subSetColumn.Value, superSetColumn, c => c.DataType.NumericScale, intComparer);
-               Compare(logger, subSetTable, subSetColumn.Value, superSetColumn, c => c.Nullable, boolComparer);
-               Compare(logger, subSetTable, subSetColumn.Value, superSetColumn, c => c.Default, stringComparer);
-               Compare(logger, subSetTable, subSetColumn.Value, superSetColumn, c => c.Identity, boolComparer);
-               Compare(logger, subSetTable, subSetColumn.Value, superSetColumn, c => c.InPrimaryKey, boolComparer);
+               Compare(mismatchLogger, subSetTable, subSetColumn.Value, superSetColumn, c => c.DataType.SqlDataType, sqlDataTypeComparer);
+               Compare(mismatchLogger, subSetTable, subSetColumn.Value, superSetColumn, c => c.DataType.MaximumLength, intComparer);
+               Compare(mismatchLogger, subSetTable, subSetColumn.Value, superSetColumn, c => c.DataType.NumericPrecision, intComparer);
+               Compare(mismatchLogger, subSetTable, subSetColumn.Value, superSetColumn, c => c.DataType.NumericScale, intComparer);
+               Compare(mismatchLogger, subSetTable, subSetColumn.Value, superSetColumn, c => c.Nullable, boolComparer);
+               Compare(mismatchLogger, subSetTable, subSetColumn.Value, superSetColumn, c => c.Default, stringComparer);
+               Compare(mismatchLogger, subSetTable, subSetColumn.Value, superSetColumn, c => c.Identity, boolComparer);
+               Compare(mismatchLogger, subSetTable, subSetColumn.Value, superSetColumn, c => c.InPrimaryKey, boolComparer);
             }
 
             if (compareIndexes)
@@ -117,7 +119,7 @@ namespace Atlas.Persistence.Testing.SqlServer
 
                if (subSetUniqueIndexes.Count != superSetUniqueIndexes.Count)
                {
-                  logger.LogWarning(
+                  mismatchLogger.LogWarning(
                      "Table '{0}' in '{1}' has '{2}' unique indexes compared to '{3}' in '{4}'",
                      subSetTable.Name,
                      subSet.Name,
@@ -146,7 +148,7 @@ namespace Atlas.Persistence.Testing.SqlServer
 
                   if (!found)
                   {
-                     logger.LogWarning("Table '{0}' in '{1}' has unexpected unique index over columns '{2}'", subSetTable.Name, subSet.Name, string.Join(",", subSetIndexColumns));
+                     mismatchLogger.LogWarning("Table '{0}' in '{1}' has unexpected unique index over columns '{2}'", subSetTable.Name, subSet.Name, string.Join(",", subSetIndexColumns));
                   }
                }
             }
@@ -154,7 +156,7 @@ namespace Atlas.Persistence.Testing.SqlServer
             // TODO: Check FK (keys can have different names)
          }
 
-         if (logger.Errors || logger.Warnings)
+         if (mismatchLogger.Errors || mismatchLogger.Warnings)
          {
             Assert.Fail("Schema comparison failed - see ILog output for details");
          }
@@ -203,7 +205,7 @@ namespace Atlas.Persistence.Testing.SqlServer
          }
       }
 
-      private static void Compare<T>(IPersistenceLogger logger, Table table, Column tableColumn, Column otherColumn, Expression<Func<Column, T>> attributeExpression, IEqualityComparer<T> comparer)
+      private static void Compare<T>(ILogger logger, Table table, Column tableColumn, Column otherColumn, Expression<Func<Column, T>> attributeExpression, IEqualityComparer<T> comparer)
       {
          var propertyExpression = attributeExpression.Body as MemberExpression;
 
@@ -222,11 +224,11 @@ namespace Atlas.Persistence.Testing.SqlServer
          }
       }
 
-      private class MismatchLogger : IPersistenceLogger
+      private class MismatchLogger : ILogger
       {
-         private readonly IPersistenceLogger wrappedLog;
+         private readonly ILogger wrappedLog;
 
-         public MismatchLogger(IPersistenceLogger wrappedLog)
+         public MismatchLogger(ILogger wrappedLog)
          {
             this.wrappedLog = wrappedLog;
          }

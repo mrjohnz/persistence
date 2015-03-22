@@ -7,9 +7,9 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration
 {
    using System.Configuration;
 
+   using Atlas.Core.Logging;
    using Atlas.Persistence.EntityFramework.Implementations;
    using Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration.Configuration;
-   using Atlas.Persistence.Log4Net;
    using Atlas.Persistence.Testing.SqlServer;
 
    using NUnit.Framework;
@@ -26,15 +26,13 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration
 
          SqlServerSchema.Remove(subSetConnectionString);
 
-         var logger = Log4NetPersistenceLogger.FromConfig();
-
          var configuration = new EntityFrameworkConfiguration();
          configuration.ConnectionString(subSetConnectionString);
          configuration.ProviderName(EntityFrameworkConfiguration.SqlServerProviderName);
          configuration.RegisterEntitiesFromAssemblyOf<FooConfiguration>();
          configuration.CreateSchema();
 
-         SqlServerSchema.AssertContained(logger, superSetConnectionString, subSetConnectionString, false, "EdmMetadata");
+         SqlServerSchema.AssertContained(new ConsoleLogger(), superSetConnectionString, subSetConnectionString, false, "EdmMetadata");
       }
    }
 }
