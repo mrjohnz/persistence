@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Atlas.Persistence.EntityFramework</id>
+    <id>Atlas.Persistence.NHibernate.ByteCode.Unity</id>
     <version>$version$</version>
-    <title>Atlas.Persistence.EntityFramework</title>
+    <title>Atlas.Persistence.NHibernate.ByteCode.Unity</title>
     <authors>acraven</authors>
     <owners>Epworth Consulting Ltd, acraven</owners>
     <licenseUrl>https://github.com/acraven/persistence/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/acraven/persistence</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>An EntityFramework implementation of the unit of work pattern</description>
+    <description>A Unity implementation of the NHibernate proxy factory</description>
     <copyright>(c) Epworth Consulting Ltd</copyright>
-    <tags>Persistence ORM UnitOfWork EntityFramework</tags>
+    <tags>Persistence ORM UnitOfWork NHibernate Unity</tags>
   </metadata>
 </package>

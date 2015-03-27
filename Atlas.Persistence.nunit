@@ -2,6 +2,6 @@
   <Settings activeconfig="Default" processModel="Default" domainUsage="Multiple" />
   <Config name="Default" binpathtype="Auto">
     <assembly path="src\Atlas.Persistence.EntityFramework.Tests\bin\Release\Atlas.Persistence.EntityFramework.Tests.dll" />
-    <assembly path="src\Atlas.Persistence.Log4Net.Tests\bin\Release\Atlas.Persistence.Log4Net.Tests.dll" />
+    <assembly path="src\Atlas.Persistence.NHibernate.Tests\bin\Release\Atlas.Persistence.NHibernate.Tests.dll" />
   </Config>
 </NUnitProject>
