@@ -17,7 +17,7 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkDbContextConfig
 
          configuration.ConnectionStringName("Persistence");
 
-         return new EntityFrameworkUnitOfWork.Factory(configuration, new ConsoleLogger());
+         return new EntityFrameworkUnitOfWork.Factory(configuration, new ConsoleLogger { DebugLoggingIsEnabled = false });
       }
    }
 }
