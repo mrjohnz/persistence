@@ -96,7 +96,7 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
 
          SqlServerSchema.Prepare(subSetConnectionString);
 
-         var configuration = new NHibernateConfiguration(new ConsoleLogger());
+         var configuration = new NHibernateConfiguration(new ConsoleLogger { DebugLoggingIsEnabled = false });
 
          foreach (var configurer in configurers)
          {

@@ -20,7 +20,7 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration
          configuration.ProviderName(EntityFrameworkConfiguration.SqlServerProviderName);
          configuration.RegisterEntitiesFromAssemblyOf<FooConfiguration>();
 
-         return new EntityFrameworkUnitOfWork.Factory(configuration, new ConsoleLogger());
+         return new EntityFrameworkUnitOfWork.Factory(configuration, new ConsoleLogger { DebugLoggingIsEnabled = false });
       }
    }
 }

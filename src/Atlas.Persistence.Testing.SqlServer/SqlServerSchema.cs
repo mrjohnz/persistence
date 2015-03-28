@@ -237,6 +237,16 @@ namespace Atlas.Persistence.Testing.SqlServer
 
          public bool Errors { get; private set; }
 
+         public bool InfoLoggingIsEnabled
+         {
+            get { return this.wrappedLog.InfoLoggingIsEnabled; }
+         }
+
+         public bool DebugLoggingIsEnabled
+         {
+            get { return this.wrappedLog.DebugLoggingIsEnabled; }
+         }
+
          public void LogDebug(string message, params object[] args)
          {
             this.wrappedLog.LogDebug(message, args);

@@ -59,15 +59,17 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Reference Include="Atlas.Core.Logging, Version=0.0.10.0, Culture=neutral, PublicKeyToken=1bc3ca30d350e5c7, processorArchitecture=MSIL">
+    <Reference Include="Atlas.Core.Logging, Version=0.0.11.0, Culture=neutral, PublicKeyToken=1bc3ca30d350e5c7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Atlas.Core.Logging.0.0.10.0\lib\net451\Atlas.Core.Logging.dll</HintPath>
+      <HintPath>..\..\packages\Atlas.Core.Logging.0.0.11.0\lib\net451\Atlas.Core.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="FakeItEasy">
       <HintPath>..\..\packages\FakeItEasy.1.25.2\lib\net40\FakeItEasy.dll</HintPath>

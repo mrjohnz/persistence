@@ -18,10 +18,10 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
    {
       public static IUnitOfWorkFactory CreateUnitOfWorkFactory()
       {
-         var logger = new ConsoleLogger();
+         var logger = new ConsoleLogger { DebugLoggingIsEnabled = false };
 
          var databaseConfigurer = new SqlServerDatabaseConfigurer()
-            .ConnectionString(@"Data Source=.\SQLEXPRESS;Initial Catalog=AtlasPersistenceTests;Integrated Security=True;MultipleActiveResultSets=True");
+            .ConnectionStringName("Persistence");
 
          var mapperConfigurer = new ByCodeMapperConfigurer()
             .RegisterEntitiesFromAssembly(Assembly.GetExecutingAssembly());
