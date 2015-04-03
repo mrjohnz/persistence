@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas.Persistence.NHibernat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas.Persistence.NHibernate.ByteCode.Unity", "src\Atlas.Persistence.NHibernate.ByteCode.Unity\Atlas.Persistence.NHibernate.ByteCode.Unity.csproj", "{A9A43C4B-1F02-4CB7-B190-2A9AD264923C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atlas.Persistence.Tests", "src\Atlas.Persistence.Tests\Atlas.Persistence.Tests.csproj", "{C377356E-11E9-417A-B678-CDAEB72C6CE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{A9A43C4B-1F02-4CB7-B190-2A9AD264923C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9A43C4B-1F02-4CB7-B190-2A9AD264923C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9A43C4B-1F02-4CB7-B190-2A9AD264923C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C377356E-11E9-417A-B678-CDAEB72C6CE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C377356E-11E9-417A-B678-CDAEB72C6CE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C377356E-11E9-417A-B678-CDAEB72C6CE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C377356E-11E9-417A-B678-CDAEB72C6CE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

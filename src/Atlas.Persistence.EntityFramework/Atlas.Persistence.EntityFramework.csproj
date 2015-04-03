@@ -40,6 +40,7 @@
     <Compile Include="Conventions\DateTime2Convention.cs" />
     <Compile Include="Conventions\ForeignKeyNamingConvention.cs" />
     <Compile Include="IEntityFrameworkPersistenceConfiguration.cs" />
+    <Compile Include="Implementations\EntityFrameworkAuditInterceptor.cs" />
     <Compile Include="Implementations\EntityFrameworkUnitOfWork.cs" />
     <Compile Include="Implementations\EntityFrameworkConfiguration.cs" />
     <Compile Include="Implementations\EntityQueryable.cs" />

@@ -32,6 +32,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="EntityFrameworkConfiguration\CompareSchemaTests.cs" />
+    <Compile Include="EntityFrameworkConfiguration\AuditTests.cs" />
+    <Compile Include="EntityFrameworkConfiguration\Configuration\AuditConfiguration.cs" />
+    <Compile Include="EntityFrameworkConfiguration\Configuration\AuditCreatedAtOnlyConfiguration.cs" />
+    <Compile Include="EntityFrameworkConfiguration\Configuration\AuditCreatedByOnlyConfiguration.cs" />
+    <Compile Include="EntityFrameworkConfiguration\Configuration\AuditCreatedConfiguration.cs" />
+    <Compile Include="EntityFrameworkConfiguration\Configuration\AuditModifiedAtOnlyConfiguration.cs" />
+    <Compile Include="EntityFrameworkConfiguration\Configuration\AuditModifiedByOnlyConfiguration.cs" />
+    <Compile Include="EntityFrameworkConfiguration\Configuration\AuditModifiedConfiguration.cs" />
     <Compile Include="EntityFrameworkConfiguration\Configuration\BaseClassConfiguration.cs" />
     <Compile Include="EntityFrameworkConfiguration\Configuration\BaseClassPartitionedConfiguration.cs" />
     <Compile Include="EntityFrameworkConfiguration\Configuration\FooConfiguration.cs" />
@@ -42,12 +50,15 @@
     <Compile Include="EntityFrameworkConfiguration\Configuration\SubClassConfiguration.cs" />
     <Compile Include="EntityFrameworkConfiguration\Configuration\SubClassPartitionedConfiguration.cs" />
     <Compile Include="EntityFrameworkConfiguration\Helper.cs" />
+    <Compile Include="EntityFrameworkConfiguration\SaveInterceptionTests.cs" />
+    <Compile Include="EntityFrameworkDbContextConfiguration\AuditTests.cs" />
     <Compile Include="EntityFrameworkDbContextConfiguration\CompareSchemaTests.cs" />
     <Compile Include="EntityFrameworkDbContextConfiguration\ConcurrencyTests.cs" />
     <Compile Include="EntityFrameworkDbContextConfiguration\EntityQueryableTests.cs" />
     <Compile Include="EntityFrameworkDbContextConfiguration\PartitionedEntityQueryableTests.cs" />
     <Compile Include="EntityFrameworkDbContextConfiguration\Helper.cs" />
     <Compile Include="EntityFrameworkDbContextConfiguration\CompareContext.cs" />
+    <Compile Include="EntityFrameworkDbContextConfiguration\SaveInterceptionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EntityFrameworkConfiguration\ConcurrencyTests.cs" />
     <Compile Include="EntityFrameworkConfiguration\EntityQueryableTests.cs" />

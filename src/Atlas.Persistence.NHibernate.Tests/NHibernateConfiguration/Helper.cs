@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
 {
+   using System.Collections.Generic;
    using System.Reflection;
 
    using Atlas.Core.Logging;
@@ -16,7 +17,11 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
 
    public static class Helper
    {
-      public static IUnitOfWorkFactory CreateUnitOfWorkFactory()
+      public static IUnitOfWorkFactory CreateUnitOfWorkFactory(
+         IInterceptUnitOfWork interceptor = null,
+         IAuditConfiguration auditConfiguration = null,
+         IDateTimeFacility dateTimeFacility = null,
+         IUserContext userContext = null)
       {
          var logger = new ConsoleLogger { DebugLoggingIsEnabled = false };
 
@@ -31,7 +36,14 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
          configuration.RegisterConfigurer(mapperConfigurer);
          configuration.RegisterConfigurer(new ProxyConfigurer<UnityProxyFactoryFactory>());
 
-         return new NHibernateUnitOfWork.Factory(configuration, logger);
+         var interceptors = new List<IInterceptUnitOfWork>();
+
+         if (interceptor != null)
+         {
+            interceptors.Add(interceptor);
+         }
+
+         return new NHibernateUnitOfWork.Factory(configuration, interceptors.ToArray(), auditConfiguration, dateTimeFacility, userContext, logger);
       }
    }
 }

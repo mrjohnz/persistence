@@ -31,7 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="NHibernateConfiguration\AuditTests.cs" />
     <Compile Include="NHibernateConfiguration\CompareSchemaTests.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\ByCode\AuditConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\ByCode\AuditCreatedAtOnlyConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\ByCode\AuditCreatedByOnlyConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\ByCode\AuditCreatedConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\ByCode\AuditModifiedAtOnlyConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\ByCode\AuditModifiedByOnlyConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\ByCode\AuditModifiedConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\ByCode\BaseClassConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\ByCode\BaseClassPartitionedConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\ByCode\FooConfiguration.cs" />
@@ -42,6 +50,13 @@
     <Compile Include="NHibernateConfiguration\Configuration\ByCode\SubClassConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\ByCode\SubClassPartitionedConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\ByCode\XmlPropertyConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\Fluent\AuditConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\Fluent\AuditCreatedAtOnlyConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\Fluent\AuditCreatedByOnlyConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\Fluent\AuditCreatedConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\Fluent\AuditModifiedAtOnlyConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\Fluent\AuditModifiedByOnlyConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\Fluent\AuditModifiedConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\BaseClassConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\BaseClassPartitionedConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\FooConfiguration.cs" />
@@ -53,6 +68,7 @@
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\SubClassPartitionedConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\XmlPropertyConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Helper.cs" />
+    <Compile Include="NHibernateConfiguration\SaveInterceptionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NHibernateConfiguration\ConcurrencyTests.cs" />
     <Compile Include="NHibernateConfiguration\EntityQueryableTests.cs" />

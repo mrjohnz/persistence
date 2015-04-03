@@ -5,6 +5,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration
 {
+   using System.Collections.Generic;
+
    using Atlas.Core.Logging;
    using Atlas.Persistence;
    using Atlas.Persistence.EntityFramework.Implementations;
@@ -12,7 +14,11 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration
 
    public static class Helper
    {
-      public static IUnitOfWorkFactory CreateUnitOfWorkFactory()
+      public static IUnitOfWorkFactory CreateUnitOfWorkFactory(
+         IInterceptUnitOfWork interceptor = null,
+         IAuditConfiguration auditConfiguration = null,
+         IDateTimeFacility dateTimeFacility = null,
+         IUserContext userContext = null)
       {
          var configuration = new EntityFrameworkConfiguration();
 
@@ -20,7 +26,19 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration
          configuration.ProviderName(EntityFrameworkConfiguration.SqlServerProviderName);
          configuration.RegisterEntitiesFromAssemblyOf<FooConfiguration>();
 
-         return new EntityFrameworkUnitOfWork.Factory(configuration, new ConsoleLogger { DebugLoggingIsEnabled = false });
+         var interceptors = new List<IInterceptUnitOfWork>();
+
+         if (interceptor != null)
+         {
+            interceptors.Add(interceptor);
+         }
+
+         if (auditConfiguration != null)
+         {
+            interceptors.Add(new EntityFrameworkAuditInterceptor(auditConfiguration, dateTimeFacility, userContext));
+         }
+
+         return new EntityFrameworkUnitOfWork.Factory(configuration, interceptors.ToArray(), new ConsoleLogger { DebugLoggingIsEnabled = false });
       }
    }
 }

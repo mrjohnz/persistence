@@ -6,6 +6,8 @@
 namespace Atlas.Persistence.EntityFramework.Implementations
 {
    using System;
+   using System.Collections.Generic;
+   using System.Data.Entity;
    using System.Data.Entity.Core;
    using System.Data.Entity.Core.Metadata.Edm;
    using System.Data.Entity.Core.Objects;
@@ -18,21 +20,25 @@ namespace Atlas.Persistence.EntityFramework.Implementations
    {
       private readonly Guid unitOfWorkGuid;
       private readonly ObjectContext objectContext;
+      private readonly IInterceptUnitOfWork[] interceptors;
       private readonly ILogger logger;
 
       private bool isDisposed;
 
       private EntityFrameworkUnitOfWork(
          ObjectContext objectContext,
+         IInterceptUnitOfWork[] interceptors,
          ILogger logger)
       {
          ThrowIf.ArgumentIsNull(objectContext, "objectContext");
+         ThrowIf.ArgumentIsNull(interceptors, "interceptors");
          ThrowIf.ArgumentIsNull(logger, "logger");
 
          this.unitOfWorkGuid = Guid.NewGuid();
          this.objectContext = objectContext;
          this.objectContext.ContextOptions.LazyLoadingEnabled = true;
          this.objectContext.ContextOptions.ProxyCreationEnabled = true;
+         this.interceptors = interceptors;
 
          this.logger = logger;
          this.logger.LogDebug("EntityFrameworkUnitOfWork(...) '{0}'", this.unitOfWorkGuid);
@@ -118,9 +124,17 @@ namespace Atlas.Persistence.EntityFramework.Implementations
 
          try
          {
-            // No need to use SaveOptions.DetectChangesBeforeSave as GetCache will have called DetectChanges
-            // this.objectContext.SaveChanges(SaveOptions.AcceptAllChangesAfterSave);
-            this.objectContext.SaveChanges(SaveOptions.DetectChangesBeforeSave);
+            if (this.interceptors.Length != 0)
+            {
+               this.HandleInterceptors();
+
+               // No need to use SaveOptions.DetectChangesBeforeSave as GetCache will have called DetectChanges
+               this.objectContext.SaveChanges(SaveOptions.AcceptAllChangesAfterSave);
+            }
+            else
+            {
+               this.objectContext.SaveChanges(SaveOptions.DetectChangesBeforeSave);
+            }
          }
          catch (OptimisticConcurrencyException e)
          {
@@ -166,6 +180,38 @@ namespace Atlas.Persistence.EntityFramework.Implementations
          throw new InvalidOperationException(string.Format("Entity '{0}' has not been registered.", typeof(TEntity).Name));
       }
 
+      private void HandleInterceptors()
+      {
+         const EntityState StateFilter = EntityState.Added | EntityState.Modified | EntityState.Deleted;
+
+         this.objectContext.DetectChanges();
+
+         var entityChanges = new Dictionary<EntityState, object[]>
+            {
+               { EntityState.Added, new object[0] }, 
+               { EntityState.Modified, new object[0] },
+               { EntityState.Deleted, new object[0] }
+            };
+
+         var changedEntitiesByState = this.objectContext.ObjectStateManager.GetObjectStateEntries(StateFilter)
+            .Where(c => !c.IsRelationship)
+            .Select(c => new { c.Entity, c.State })
+            .GroupBy(c => c.State)
+            .ToArray();
+
+         foreach (var changedEntities in changedEntitiesByState)
+         {
+            entityChanges[changedEntities.Key] = changedEntities.Select(c => c.Entity).ToArray();
+         }
+         
+         foreach (var saveInterceptor in this.interceptors)
+         {
+            saveInterceptor.Add(entityChanges[EntityState.Added]);
+            saveInterceptor.Modify(entityChanges[EntityState.Modified]);
+            saveInterceptor.Remove(entityChanges[EntityState.Deleted]);
+         }
+      }
+
       private void AssertNotDisposed()
       {
          if (this.isDisposed)
@@ -199,16 +245,20 @@ namespace Atlas.Persistence.EntityFramework.Implementations
       public class Factory : IUnitOfWorkFactory
       {
          private readonly IEntityFrameworkPersistenceConfiguration configuration;
+         private readonly IInterceptUnitOfWork[] interceptors;
          private readonly ILogger logger;
 
          public Factory(
             IEntityFrameworkPersistenceConfiguration configuration,
+            IInterceptUnitOfWork[] interceptors,
             ILogger logger)
          {
             ThrowIf.ArgumentIsNull(configuration, "configuration");
+            ThrowIf.ArgumentIsNull(interceptors, "interceptors");
             ThrowIf.ArgumentIsNull(logger, "logger");
 
             this.configuration = configuration;
+            this.interceptors = interceptors;
             this.logger = logger;
          }
 
@@ -218,6 +268,7 @@ namespace Atlas.Persistence.EntityFramework.Implementations
 
             return new EntityFrameworkUnitOfWork(
                objectContext,
+               this.interceptors,
                this.logger);
          }
       }

@@ -31,7 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AuditTestsBase.cs" />
     <Compile Include="ConcurrencyTestsBase.cs" />
+    <Compile Include="Entities\Audit.cs" />
+    <Compile Include="Entities\AuditCreated.cs" />
+    <Compile Include="Entities\AuditCreatedAtOnly.cs" />
+    <Compile Include="Entities\AuditCreatedByOnly.cs" />
+    <Compile Include="Entities\AuditModified.cs" />
+    <Compile Include="Entities\AuditModifiedAtOnly.cs" />
+    <Compile Include="Entities\AuditModifiedByOnly.cs" />
     <Compile Include="Entities\BaseClass.cs" />
     <Compile Include="Entities\BaseClassPartitioned.cs" />
     <Compile Include="Entities\Foo.cs" />
@@ -49,6 +57,7 @@
     <Compile Include="Entities\IFoo.cs" />
     <Compile Include="PartitionedEntityQueryableTestsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveInterceptionTestsBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="nunit.framework">

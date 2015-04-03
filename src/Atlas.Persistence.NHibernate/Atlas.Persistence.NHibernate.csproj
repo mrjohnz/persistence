@@ -49,6 +49,7 @@
     <Compile Include="Configuration\Fluent\Conventions\XElementConvention.cs" />
     <Compile Include="Configuration\Fluent\FluentAutoMapperConfigurer.cs" />
     <Compile Include="Configuration\Fluent\FluentMapperConfigurer.cs" />
+    <Compile Include="Implementations\SessionInterceptor.cs" />
     <Compile Include="INHibernateConfigurer.cs" />
     <Compile Include="Implementations\Hql\AtlasLinqToHqlGeneratorsRegistry.cs" />
     <Compile Include="Implementations\Hql\Extensions.cs" />
@@ -82,6 +83,7 @@
     <Reference Include="NHibernate.Caches.RtMemoryCache">
       <HintPath>..\..\packages\NHibernate.Caches.RtMemoryCache.4.0.0.4000\lib\net40\NHibernate.Caches.RtMemoryCache.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />

@@ -163,22 +163,34 @@ namespace Atlas.Persistence.NHibernate.Implementations
       public class Factory : IUnitOfWorkFactory
       {
          private readonly ISessionFactory sessionFactory;
+         private readonly IInterceptUnitOfWork[] interceptors;
+         private readonly IAuditConfiguration auditConfiguration;
+         private readonly IDateTimeFacility dateTimeFacility;
+         private readonly IUserContext userContext;
          private readonly ILogger logger;
 
          public Factory(
             INHibernatePersistenceConfiguration configuration,
+            IInterceptUnitOfWork[] interceptors,
+            IAuditConfiguration auditConfiguration,
+            IDateTimeFacility dateTimeFacility,
+            IUserContext userContext,
             ILogger logger)
          {
             ThrowIf.ArgumentIsNull(configuration, "configuration");
             ThrowIf.ArgumentIsNull(logger, "logger");
 
             this.sessionFactory = configuration.CreateSessionFactory();
+            this.interceptors = interceptors;
+            this.auditConfiguration = auditConfiguration;
+            this.dateTimeFacility = dateTimeFacility;
+            this.userContext = userContext;
             this.logger = logger;
          }
          
          public IUnitOfWork Create()
          {
-            var transaction = new NHibernateTransaction(this.sessionFactory, this.logger);
+            var transaction = new NHibernateTransaction(this.sessionFactory, this.interceptors, this.auditConfiguration, this.dateTimeFacility, this.userContext, this.logger);
 
             return new NHibernateUnitOfWork(transaction, this.logger);
          }

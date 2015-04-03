@@ -1,6 +1,7 @@
 ﻿<NUnitProject>
   <Settings activeconfig="Default" processModel="Default" domainUsage="Multiple" />
   <Config name="Default" binpathtype="Auto">
+    <assembly path="src\Atlas.Persistence.Tests\bin\Release\Atlas.Persistence.Tests.dll" />
     <assembly path="src\Atlas.Persistence.EntityFramework.Tests\bin\Release\Atlas.Persistence.EntityFramework.Tests.dll" />
     <assembly path="src\Atlas.Persistence.NHibernate.Tests\bin\Release\Atlas.Persistence.NHibernate.Tests.dll" />
   </Config>

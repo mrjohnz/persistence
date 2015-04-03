@@ -18,6 +18,20 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkDbContextConfig
       {
       }
 
+      public DbSet<Audit> Audits { get; set; }
+
+      public DbSet<AuditCreatedAtOnly> AuditCreatedAtOnlys { get; set; }
+
+      public DbSet<AuditCreatedByOnly> AuditCreatedByOnlys { get; set; }
+
+      public DbSet<AuditCreated> AuditCreateds { get; set; }
+
+      public DbSet<AuditModifiedAtOnly> AuditModifiedAtOnlys { get; set; }
+
+      public DbSet<AuditModifiedByOnly> AuditModifiedByOnlys { get; set; }
+
+      public DbSet<AuditModified> AuditModifieds { get; set; }
+
       public DbSet<BaseClass> BaseClasses { get; set; }
 
       public DbSet<BaseClassPartitioned> BaseClassPartitioned { get; set; }
@@ -46,6 +60,13 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkDbContextConfig
          modelBuilder.Entity<GuidChild>().HasKey(c => c.Guid);
          modelBuilder.Entity<GuidParent>().HasKey(c => c.Guid);
 
+         modelBuilder.Entity<Audit>().Property(c => c.ID).HasColumnName("AuditID");
+         modelBuilder.Entity<AuditCreatedAtOnly>().Property(c => c.ID).HasColumnName("AuditCreatedAtOnlyID");
+         modelBuilder.Entity<AuditCreatedByOnly>().Property(c => c.ID).HasColumnName("AuditCreatedByOnlyID");
+         modelBuilder.Entity<AuditCreated>().Property(c => c.ID).HasColumnName("AuditCreatedID");
+         modelBuilder.Entity<AuditModifiedAtOnly>().Property(c => c.ID).HasColumnName("AuditModifiedAtOnlyID");
+         modelBuilder.Entity<AuditModifiedByOnly>().Property(c => c.ID).HasColumnName("AuditModifiedByOnlyID");
+         modelBuilder.Entity<AuditModified>().Property(c => c.ID).HasColumnName("AuditModifiedID");
          modelBuilder.Entity<BaseClass>().Property(c => c.ID).HasColumnName("BaseClassID");
          modelBuilder.Entity<BaseClassPartitioned>().Property(c => c.ID).HasColumnName("BaseClassID");
          modelBuilder.Entity<Foo>().Property(c => c.ID).HasColumnName("FooID");

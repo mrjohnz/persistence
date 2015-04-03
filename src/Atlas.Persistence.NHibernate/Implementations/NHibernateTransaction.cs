@@ -22,12 +22,24 @@ namespace Atlas.Persistence.NHibernate.Implementations
 
       public NHibernateTransaction(
          ISessionFactory sessionFactory,
+         IInterceptUnitOfWork[] interceptors,
+         IAuditConfiguration auditConfiguration,
+         IDateTimeFacility dateTimeFacility,
+         IUserContext userContext,
          ILogger logger)
       {
          ThrowIf.ArgumentIsNull(sessionFactory, "sessionFactory");
          ThrowIf.ArgumentIsNull(logger, "logger");
 
-         this.session = sessionFactory.OpenSession();
+         if ((interceptors != null && interceptors.Length != 0) || (auditConfiguration != null && dateTimeFacility != null && userContext != null))
+         {
+            this.session = sessionFactory.OpenSession(new SessionInterceptor(interceptors, auditConfiguration, dateTimeFacility, userContext));
+         }
+         else
+         {
+            this.session = sessionFactory.OpenSession();
+         }
+
          this.session.FlushMode = FlushMode.Commit;
          this.logger = logger;
       }
