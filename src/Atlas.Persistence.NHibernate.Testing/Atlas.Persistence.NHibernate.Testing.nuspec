@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Atlas.Persistence.NHibernate.Testing</id>
+    <version>$version$</version>
+    <title>Atlas.Persistence.NHibernate.Testing</title>
+    <authors>acraven</authors>
+    <owners>Epworth Consulting Ltd, acraven</owners>
+    <licenseUrl>https://github.com/acraven/persistence/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/acraven/persistence</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SQLite utilities to support integration testing Atlas.Persistence</description>
+    <copyright>(c) Epworth Consulting Ltd</copyright>
+    <tags>Persistence SqlServer SQLite</tags>
+  </metadata>
+</package>
