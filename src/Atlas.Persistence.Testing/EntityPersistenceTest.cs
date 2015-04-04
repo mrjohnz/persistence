@@ -25,11 +25,10 @@ namespace Atlas.Persistence.Testing
 
       private IIdentityKeyProperty<TEntity> identityKeyProperty;
 
-      public EntityPersistenceTest(IUnitOfWork unitOfWork, IUnitOfWorkFactory unitOfWorkFactory, IUserContext userContext, IEntityComparer entityComparer)
+      public EntityPersistenceTest(IUnitOfWork unitOfWork, IUnitOfWorkFactory unitOfWorkFactory, IEntityComparer entityComparer)
       {
          ThrowIf.ArgumentIsNull(unitOfWork, "unitOfWork");
          ThrowIf.ArgumentIsNull(unitOfWorkFactory, "unitOfWorkFactory");
-         ThrowIf.ArgumentIsNull(userContext, "userContext");
 
          this.unitOfWork = unitOfWork;
          this.unitOfWorkFactory = unitOfWorkFactory;
