@@ -6,6 +6,7 @@
 namespace Atlas.Persistence.NHibernate.Implementations
 {
    using System;
+   using System.Data;
 
    using Atlas.Core.Logging;
    using Atlas.Persistence.NHibernate;
@@ -22,6 +23,7 @@ namespace Atlas.Persistence.NHibernate.Implementations
 
       public NHibernateTransaction(
          ISessionFactory sessionFactory,
+         IDbConnection connection,
          IInterceptUnitOfWork[] interceptors,
          IAuditConfiguration auditConfiguration,
          IDateTimeFacility dateTimeFacility,
@@ -33,7 +35,18 @@ namespace Atlas.Persistence.NHibernate.Implementations
 
          if ((interceptors != null && interceptors.Length != 0) || (auditConfiguration != null && dateTimeFacility != null && userContext != null))
          {
-            this.session = sessionFactory.OpenSession(new SessionInterceptor(interceptors, auditConfiguration, dateTimeFacility, userContext));
+            if (connection != null)
+            {
+               this.session = sessionFactory.OpenSession(connection, new SessionInterceptor(interceptors, auditConfiguration, dateTimeFacility, userContext));
+            }
+            else
+            {
+               this.session = sessionFactory.OpenSession(new SessionInterceptor(interceptors, auditConfiguration, dateTimeFacility, userContext));
+            }
+         }
+         else if (connection != null)
+         {
+            this.session = sessionFactory.OpenSession(connection);
          }
          else
          {

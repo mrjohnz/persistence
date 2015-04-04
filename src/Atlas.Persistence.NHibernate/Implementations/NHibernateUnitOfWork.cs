@@ -190,7 +190,7 @@ namespace Atlas.Persistence.NHibernate.Implementations
          
          public IUnitOfWork Create()
          {
-            var transaction = new NHibernateTransaction(this.sessionFactory, this.interceptors, this.auditConfiguration, this.dateTimeFacility, this.userContext, this.logger);
+            var transaction = new NHibernateTransaction(this.sessionFactory, null, this.interceptors, this.auditConfiguration, this.dateTimeFacility, this.userContext, this.logger);
 
             return new NHibernateUnitOfWork(transaction, this.logger);
          }

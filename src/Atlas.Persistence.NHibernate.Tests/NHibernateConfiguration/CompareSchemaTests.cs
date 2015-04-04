@@ -9,11 +9,12 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
    using System.Reflection;
 
    using Atlas.Core.Logging;
-   using Atlas.Persistence.NHibernate.ByteCode.Unity;
+   using Atlas.Persistence.NHibernate.ByteCode.Castle;
    using Atlas.Persistence.NHibernate.Configuration;
    using Atlas.Persistence.NHibernate.Configuration.ByCode;
    using Atlas.Persistence.NHibernate.Configuration.Fluent;
    using Atlas.Persistence.NHibernate.Implementations;
+   using Atlas.Persistence.NHibernate.Testing.Configuration.Fluent;
    using Atlas.Persistence.Testing.SqlServer;
 
    using NUnit.Framework;
@@ -38,7 +39,7 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
             subSetConnectionString,
             databaseConfigurer,
             mapperConfigurer,
-            new ProxyConfigurer<UnityProxyFactoryFactory>());
+            new ProxyConfigurer<CastleProxyFactoryFactory>());
       }
 
       [Test]
@@ -61,34 +62,34 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
             subSetConnectionString,
             databaseConfigurer,
             mapperConfigurer,
-            new ProxyConfigurer<UnityProxyFactoryFactory>());
+            new ProxyConfigurer<CastleProxyFactoryFactory>());
       }
 
-      //[Ignore] // Not yet fully implemented
-      //[Test]
-      //[Category("CompareSchema")]
-      //[Timeout(300000)]
-      //public void CompareFluentAutoMapSchema()
-      //{
-      //   var subSetConnectionString = ConfigurationManager.ConnectionStrings["PersistenceNHFluentAuto"].ConnectionString;
+      [Ignore] // Not yet fully implemented
+      [Test]
+      [Category("CompareSchema")]
+      [Timeout(300000)]
+      public void CompareFluentAutoMapSchema()
+      {
+         var subSetConnectionString = ConfigurationManager.ConnectionStrings["PersistenceNHFluentAuto"].ConnectionString;
 
-      //   var databaseConfigurer = new SqlServerDatabaseConfigurer()
-      //      .ConnectionString(subSetConnectionString);
+         var databaseConfigurer = new SqlServerDatabaseConfigurer()
+            .ConnectionString(subSetConnectionString);
 
-      //   var mapperConfigurer = new FluentAutoMapperConfigurer()
-      //      .AutoMappingConfiguration(new SQLiteAtlasAutoMappingConfiguration())
-      //      .AutoMapEntitiesFromAssembly(Assembly.GetExecutingAssembly())
-      //      .RegisterConvention<NHibernate.Configuration.Fluent.Conventions.PropertyConvention>()
-      //      .RegisterConvention<NHibernate.Configuration.Fluent.Conventions.DateTime2Convention>()
-      //      .RegisterConvention<NHibernate.Configuration.Fluent.Conventions.VersionConvention>()
-      //      .RegisterConvention<NHibernate.Configuration.Fluent.Conventions.XElementConvention>();
+         var mapperConfigurer = new FluentAutoMapperConfigurer()
+            .AutoMappingConfiguration(new SQLiteAtlasAutoMappingConfiguration())
+            .AutoMapEntitiesFromAssembly(Assembly.GetExecutingAssembly())
+            .RegisterConvention<NHibernate.Configuration.Fluent.Conventions.PropertyConvention>()
+            .RegisterConvention<NHibernate.Configuration.Fluent.Conventions.DateTime2Convention>()
+            .RegisterConvention<NHibernate.Configuration.Fluent.Conventions.VersionConvention>()
+            .RegisterConvention<NHibernate.Configuration.Fluent.Conventions.XElementConvention>();
 
-      //   this.CompareSchema(
-      //      subSetConnectionString,
-      //      databaseConfigurer,
-      //      mapperConfigurer,
-      //      new ProxyConfigurer<UnityProxyFactoryFactory>());
-      //}
+         this.CompareSchema(
+            subSetConnectionString,
+            databaseConfigurer,
+            mapperConfigurer,
+            new ProxyConfigurer<CastleProxyFactoryFactory>());
+      }
 
       private void CompareSchema(string subSetConnectionString, params INHibernateConfigurer[] configurers)
       {

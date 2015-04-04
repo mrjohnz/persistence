@@ -10,7 +10,7 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
 
    using Atlas.Core.Logging;
    using Atlas.Persistence;
-   using Atlas.Persistence.NHibernate.ByteCode.Unity;
+   using Atlas.Persistence.NHibernate.ByteCode.Castle;
    using Atlas.Persistence.NHibernate.Configuration;
    using Atlas.Persistence.NHibernate.Configuration.ByCode;
    using Atlas.Persistence.NHibernate.Implementations;
@@ -34,7 +34,7 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
          var configuration = new NHibernateConfiguration(logger);
          configuration.RegisterConfigurer(databaseConfigurer);
          configuration.RegisterConfigurer(mapperConfigurer);
-         configuration.RegisterConfigurer(new ProxyConfigurer<UnityProxyFactoryFactory>());
+         configuration.RegisterConfigurer(new ProxyConfigurer<CastleProxyFactoryFactory>());
 
          var interceptors = new List<IInterceptUnitOfWork>();
 

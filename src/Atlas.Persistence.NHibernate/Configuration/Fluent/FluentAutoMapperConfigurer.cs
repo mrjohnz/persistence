@@ -21,6 +21,7 @@ namespace Atlas.Persistence.NHibernate.Configuration.Fluent
       private readonly IList<Assembly> autoMapAssemblies = new List<Assembly>();
       private readonly IList<Assembly> overrideAssemblies = new List<Assembly>();
       private readonly IList<Type> conventionTypes = new List<Type>();
+      private readonly IList<Action<AutoPersistenceModel>> overrides = new List<Action<AutoPersistenceModel>>();
 
       private IAutomappingConfiguration autoMappingConfiguration;
 
@@ -62,6 +63,13 @@ namespace Atlas.Persistence.NHibernate.Configuration.Fluent
          return this;
       }
 
+      public FluentAutoMapperConfigurer RegisterOverride<T>(Action<AutoMapping<T>> autoMapping)
+      {
+         this.overrides.Add(model => model.Override(autoMapping));
+
+         return this;
+      }
+
       public void Configure(Configuration configuration)
       {
          var autoPersistenceModel = new AutoPersistenceModel(this.autoMappingConfiguration);
@@ -79,6 +87,11 @@ namespace Atlas.Persistence.NHibernate.Configuration.Fluent
          foreach (var assembly in this.overrideAssemblies)
          {
             autoPersistenceModel.UseOverridesFromAssembly(assembly);
+         }
+
+         foreach (var @override in this.overrides)
+         {
+            @override(autoPersistenceModel);
          }
 
          autoPersistenceModel.Configure(configuration);

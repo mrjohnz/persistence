@@ -5,6 +5,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Atlas.Persistence.NHibernate
 {
+   using System.Data;
+
    using global::NHibernate;
 
    public interface INHibernatePersistenceConfiguration : IPersistenceConfiguration
@@ -12,5 +14,7 @@ namespace Atlas.Persistence.NHibernate
       INHibernatePersistenceConfiguration RegisterConfigurer(INHibernateConfigurer configurer);
 
       ISessionFactory CreateSessionFactory();
+
+      void CreateSchema(IDbConnection connection);
    }
 }
