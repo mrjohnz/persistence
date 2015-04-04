@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Atlas.Persistence.Testing</id>
+    <version>$version$</version>
+    <title>Atlas.Persistence.Testing</title>
+    <authors>acraven</authors>
+    <owners>Epworth Consulting Ltd, acraven</owners>
+    <licenseUrl>https://github.com/acraven/persistence/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/acraven/persistence</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Utilities to support testing of Atlas.Persistence</description>
+    <copyright>(c) Epworth Consulting Ltd</copyright>
+    <tags>Persistence</tags>
+  </metadata>
+</package>

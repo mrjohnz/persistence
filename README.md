@@ -32,6 +32,11 @@
 [![NuGet version (Atlas.Persistence.NHibernate.Testing)](https://img.shields.io/nuget/v/Atlas.Persistence.NHibernate.Testing.svg)](https://www.nuget.org/packages/Atlas.Persistence.NHibernate.Testing/)
 [![NuGet Status](http://nugetstatus.com/Atlas.Persistence.NHibernate.Testing.png)](http://nugetstatus.com/packages/Atlas.Persistence.NHibernate.Testing)
 
+## Atlas.Persistence.Testing
+
+[![NuGet version (Atlas.Persistence.Testing)](https://img.shields.io/nuget/v/Atlas.Persistence.Testing.svg)](https://www.nuget.org/packages/Atlas.Persistence.Testing/)
+[![NuGet Status](http://nugetstatus.com/Atlas.Persistence.Testing.png)](http://nugetstatus.com/packages/Atlas.Persistence.Testing)
+
 ## Atlas.Persistence.Testing.SqlServer
 
 [![NuGet version (Atlas.Persistence.Testing.SqlServer)](https://img.shields.io/nuget/v/Atlas.Persistence.Testing.SqlServer.svg)](https://www.nuget.org/packages/Atlas.Persistence.Testing.SqlServer/)
