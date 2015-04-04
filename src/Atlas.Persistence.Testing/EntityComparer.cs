@@ -8,7 +8,7 @@ namespace Atlas.Persistence.Testing
    using System;
    using System.Collections.Generic;
 
-   public class EntityComparer
+   public class EntityComparer : IEntityComparer
    {
       private readonly Dictionary<Type, Delegate> comparers = new Dictionary<Type, Delegate>();
 

@@ -24,5 +24,13 @@ namespace Atlas.Persistence
             throw new ArgumentNullException(argName);
          }
       }
+
+      public static void Null<T>(T arg, string argName) where T : class
+      {
+         if (arg == null)
+         {
+            throw new InvalidOperationException(string.Format("'{0}' cannot be null.", argName));
+         }
+      }
    }
 }

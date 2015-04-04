@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkDbContextConfiguration
 {
-   using Atlas.Persistence.Testing;
+   using Atlas.Persistence.TestsBase;
 
    public class SaveInterceptionTests : SaveInterceptionTestsBase
    {

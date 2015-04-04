@@ -9,7 +9,7 @@ namespace Atlas.Persistence.NHibernate.Tests.Other
 
    using Atlas.Persistence;
    using Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration;
-   using Atlas.Persistence.Testing.Entities;
+   using Atlas.Persistence.TestsBase.Entities;
 
    using global::NHibernate.Proxy;
 

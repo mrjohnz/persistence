@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
 {
-   using Atlas.Persistence.Testing;
+   using Atlas.Persistence.TestsBase;
 
    public class PartitionedEntityQueryableTests : PartitionedEntityQueryableTestsBase
    {

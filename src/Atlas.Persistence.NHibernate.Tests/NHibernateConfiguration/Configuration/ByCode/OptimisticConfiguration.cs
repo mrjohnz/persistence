@@ -6,7 +6,7 @@
 namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration.Configuration.ByCode
 {
    using Atlas.Persistence.NHibernate.UserTypes;
-   using Atlas.Persistence.Testing.Entities;
+   using Atlas.Persistence.TestsBase.Entities;
 
    using global::NHibernate.Mapping.ByCode;
    using global::NHibernate.Mapping.ByCode.Conformist;

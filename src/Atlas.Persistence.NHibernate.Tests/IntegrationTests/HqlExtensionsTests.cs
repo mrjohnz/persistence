@@ -17,7 +17,7 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
    using Atlas.Persistence.NHibernate.Testing;
    using Atlas.Persistence.NHibernate.Testing.Configuration;
    using Atlas.Persistence.NHibernate.Testing.Configuration.Fluent.Conventions;
-   using Atlas.Persistence.Testing.Entities;
+   using Atlas.Persistence.TestsBase.Entities;
 
    using NUnit.Framework;
 

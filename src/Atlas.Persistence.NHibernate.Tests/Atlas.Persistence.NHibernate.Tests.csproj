@@ -132,9 +132,9 @@
       <Project>{37E8DA6C-C3DC-4B5F-8038-7B7E07A02990}</Project>
       <Name>Atlas.Persistence.Testing.SqlServer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Atlas.Persistence.Testing\Atlas.Persistence.Testing.csproj">
-      <Project>{98BA5357-8897-4003-862E-10F1D3370A76}</Project>
-      <Name>Atlas.Persistence.Testing</Name>
+    <ProjectReference Include="..\Atlas.Persistence.TestsBase\Atlas.Persistence.TestsBase.csproj">
+      <Project>{9F657540-2CED-472F-AD84-EA58F73A8018}</Project>
+      <Name>Atlas.Persistence.TestsBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\Atlas.Persistence\Atlas.Persistence.csproj">
       <Project>{E81A8F77-E25C-41E9-BD97-60FF4D8DB5F5}</Project>

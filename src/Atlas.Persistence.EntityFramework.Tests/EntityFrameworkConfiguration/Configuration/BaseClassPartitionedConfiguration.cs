@@ -7,7 +7,7 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration.C
 {
    using System.Data.Entity.ModelConfiguration;
 
-   using Atlas.Persistence.Testing.Entities;
+   using Atlas.Persistence.TestsBase.Entities;
 
    public class BaseClassPartitionedConfiguration : EntityTypeConfiguration<BaseClassPartitioned>
    {

@@ -31,43 +31,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AuditTestsBase.cs" />
-    <Compile Include="ConcurrencyTestsBase.cs" />
-    <Compile Include="Entities\Audit.cs" />
-    <Compile Include="Entities\AuditCreated.cs" />
-    <Compile Include="Entities\AuditCreatedAtOnly.cs" />
-    <Compile Include="Entities\AuditCreatedByOnly.cs" />
-    <Compile Include="Entities\AuditModified.cs" />
-    <Compile Include="Entities\AuditModifiedAtOnly.cs" />
-    <Compile Include="Entities\AuditModifiedByOnly.cs" />
-    <Compile Include="Entities\BaseClass.cs" />
-    <Compile Include="Entities\BaseClassPartitioned.cs" />
-    <Compile Include="Entities\Foo.cs" />
-    <Compile Include="Entities\FooPartitioned.cs" />
-    <Compile Include="Entities\GuidChild.cs" />
-    <Compile Include="Entities\GuidParent.cs" />
-    <Compile Include="Entities\Optimistic.cs" />
-    <Compile Include="Entities\SubClass.cs" />
-    <Compile Include="Entities\SubClassPartitioned.cs" />
-    <Compile Include="Entities\XmlProperty.cs" />
+    <Compile Include="AssertDateTime.cs" />
     <Compile Include="EntityComparer.cs" />
-    <Compile Include="EntityQueryableTestsBase.cs" />
-    <Compile Include="Entities\IAudit.cs" />
-    <Compile Include="Entities\IBaseClass.cs" />
-    <Compile Include="Entities\IFoo.cs" />
-    <Compile Include="PartitionedEntityQueryableTestsBase.cs" />
+    <Compile Include="EntityPersistenceTest.cs" />
+    <Compile Include="IdentityKeyProperty.cs" />
+    <Compile Include="IEntityComparer.cs" />
+    <Compile Include="IIdentityKeyProperty.cs" />
+    <Compile Include="IKeyProperty.cs" />
+    <Compile Include="IProperty.cs" />
+    <Compile Include="KeyProperty.cs" />
+    <Compile Include="KeyReferenceProperty.cs" />
+    <Compile Include="ListProperty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SaveInterceptionTestsBase.cs" />
+    <Compile Include="Property.cs" />
+    <Compile Include="ReferenceProperty.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Atlas.Persistence\Atlas.Persistence.csproj">
@@ -76,7 +56,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

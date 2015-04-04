@@ -9,7 +9,7 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkDbContextConfig
    using System.Data.Entity.ModelConfiguration.Conventions;
 
    using Atlas.Persistence.EntityFramework.Conventions;
-   using Atlas.Persistence.Testing.Entities;
+   using Atlas.Persistence.TestsBase.Entities;
 
    public class CompareContext : DbContext
    {

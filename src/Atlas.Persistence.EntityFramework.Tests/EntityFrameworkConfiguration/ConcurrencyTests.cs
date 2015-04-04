@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration
 {
-   using Atlas.Persistence.Testing;
+   using Atlas.Persistence.TestsBase;
 
    using NUnit.Framework;
 

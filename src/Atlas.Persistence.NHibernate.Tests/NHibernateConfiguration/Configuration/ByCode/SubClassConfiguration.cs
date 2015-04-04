@@ -5,7 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration.Configuration.ByCode
 {
-   using Atlas.Persistence.Testing.Entities;
+   using Atlas.Persistence.TestsBase.Entities;
 
    using global::NHibernate.Mapping.ByCode.Conformist;
 
