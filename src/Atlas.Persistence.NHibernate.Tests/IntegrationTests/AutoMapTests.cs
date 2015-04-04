@@ -43,7 +43,7 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
 
    // TODO: IReference property
 
-   public class AutoMapTests : SQLiteTestsBase
+   public class AutoMapTests
    {
       private AtlasAutoMappingConfiguration automappingConfiguration;
       private FluentAutoMapperConfigurer fluentMapperConfigurer;
