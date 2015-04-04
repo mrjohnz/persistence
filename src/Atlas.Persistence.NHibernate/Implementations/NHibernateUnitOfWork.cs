@@ -13,7 +13,7 @@ namespace Atlas.Persistence.NHibernate.Implementations
    using global::NHibernate;
    using global::NHibernate.Linq;
 
-   public class NHibernateUnitOfWork : IUnitOfWork
+   public class NHibernateUnitOfWork : INHibernateUnitOfWork
    {
       private readonly Guid unitOfWorkGuid;
       private readonly INHibernateTransaction transaction;
@@ -39,6 +39,11 @@ namespace Atlas.Persistence.NHibernate.Implementations
       {
          this.logger.LogWarning("Dispose method of NHibernateUnitOfWork '{0}' has not been called explicitly", this.unitOfWorkGuid);
          this.Dispose(false);
+      }
+
+      public ISession Session
+      {
+         get { return this.transaction.Session; }
       }
 
       public void Add<TEntity>(TEntity entity)
