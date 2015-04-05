@@ -10,5 +10,16 @@ namespace Atlas.Persistence.NHibernate
    public interface INHibernateUnitOfWork : IUnitOfWork
    {
       ISession Session { get; }
+
+      TEntity Get<TEntity, TKey>(TKey key)
+         where TEntity : class
+         where TKey : struct;
+
+      TEntity Proxy<TEntity, TKey>(TKey key)
+         where TEntity : class
+         where TKey : struct;
+
+      bool IsProxy<TEntity>(TEntity entity)
+         where TEntity : class;
    }
 }

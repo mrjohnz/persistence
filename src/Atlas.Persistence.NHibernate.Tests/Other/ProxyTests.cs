@@ -11,8 +11,6 @@ namespace Atlas.Persistence.NHibernate.Tests.Other
    using Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration;
    using Atlas.Persistence.TestsBase.Entities;
 
-   using global::NHibernate.Proxy;
-
    using NUnit.Framework;
 
    public class ProxyTests
@@ -30,7 +28,7 @@ namespace Atlas.Persistence.NHibernate.Tests.Other
       {
          var originalFoo = CreateFoo();
 
-         using (var unitOfWork = unitOfWorkFactory.Create())
+         using (var unitOfWork = CreateUnitOfWork())
          {
             var proxyFoo = unitOfWork.Proxy<Foo, long>(originalFoo.ID);
 
@@ -43,17 +41,17 @@ namespace Atlas.Persistence.NHibernate.Tests.Other
       {
          var originalFoo = CreateFoo();
 
-         using (var unitOfWork = unitOfWorkFactory.Create())
+         using (var unitOfWork = CreateUnitOfWork())
          {
             var proxyFoo = unitOfWork.Proxy<Foo, long>(originalFoo.ID);
 
-            Assert.IsTrue(proxyFoo.IsProxy());
+            Assert.IsTrue(unitOfWork.IsProxy(proxyFoo));
          }
       }
 
       private static Foo CreateFoo()
       {
-         using (var unitOfWork = unitOfWorkFactory.Create())
+         using (var unitOfWork = CreateUnitOfWork())
          {
             var foo = new Foo { Guid = Guid.NewGuid() };
 
@@ -62,6 +60,12 @@ namespace Atlas.Persistence.NHibernate.Tests.Other
 
             return foo;
          }
+      }
+
+      private static INHibernateUnitOfWork CreateUnitOfWork()
+      {
+         var unitOfWork = unitOfWorkFactory.Create();
+         return (INHibernateUnitOfWork)unitOfWork;
       }
    }
 }

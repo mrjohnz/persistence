@@ -12,6 +12,7 @@ namespace Atlas.Persistence.NHibernate.Implementations
 
    using global::NHibernate;
    using global::NHibernate.Linq;
+   using global::NHibernate.Proxy;
 
    public class NHibernateUnitOfWork : INHibernateUnitOfWork
    {
@@ -91,6 +92,8 @@ namespace Atlas.Persistence.NHibernate.Implementations
          where TEntity : class
          where TKey : struct
       {
+         this.AssertNotDisposed();
+
          return this.transaction.Session.Get<TEntity>(key);
       }
 
@@ -98,7 +101,16 @@ namespace Atlas.Persistence.NHibernate.Implementations
          where TEntity : class
          where TKey : struct
       {
+         this.AssertNotDisposed();
+
          return this.transaction.Session.Load<TEntity>(key);
+      }
+
+      public bool IsProxy<TEntity>(TEntity entity) where TEntity : class
+      {
+         this.AssertNotDisposed();
+
+         return entity.IsProxy();
       }
 
       public void Save()

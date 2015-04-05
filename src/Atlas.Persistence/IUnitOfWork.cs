@@ -22,10 +22,6 @@ namespace Atlas.Persistence
 
       IEntityQueryable<TEntity> Query<TEntity>() where TEntity : class;
 
-      TEntity Get<TEntity, TKey>(TKey key) where TEntity : class where TKey : struct;
-
-      TEntity Proxy<TEntity, TKey>(TKey key) where TEntity : class where TKey : struct;
-
       void Save();
    }
 }

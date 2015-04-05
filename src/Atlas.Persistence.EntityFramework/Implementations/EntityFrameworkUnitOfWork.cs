@@ -103,16 +103,6 @@ namespace Atlas.Persistence.EntityFramework.Implementations
          return new EntityQueryable<TEntity>(new ObjectQuery<TEntity>(commandText, this.objectContext));
       }
 
-      public TEntity Get<TEntity, TKey>(TKey key) where TEntity : class where TKey : struct
-      {
-         throw new NotSupportedException();
-      }
-
-      public TEntity Proxy<TEntity, TKey>(TKey key) where TEntity : class where TKey : struct
-      {
-         throw new NotSupportedException();
-      }
-
       public void Save()
       {
          this.AssertNotDisposed();
