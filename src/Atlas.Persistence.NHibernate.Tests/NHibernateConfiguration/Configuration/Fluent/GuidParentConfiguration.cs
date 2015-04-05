@@ -14,7 +14,7 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration.Configurati
       public GuidParentConfiguration()
       {
          this.Table("GuidParent");
-         this.Id(c => c.Guid, "GuidParentID").GeneratedBy.GuidComb();
+         this.Id(c => c.Guid, "GuidParentID");
 
          this.Map(c => c.Name).Length(50);
 

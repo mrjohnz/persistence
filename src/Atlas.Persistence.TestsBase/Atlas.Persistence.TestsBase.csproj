@@ -54,6 +54,7 @@
     <Compile Include="Entities\SubClassPartitioned.cs" />
     <Compile Include="Entities\XmlProperty.cs" />
     <Compile Include="EntityQueryableTestsBase.cs" />
+    <Compile Include="GetTestsBase.cs" />
     <Compile Include="PartitionedEntityQueryableTestsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveInterceptionTestsBase.cs" />
@@ -62,6 +63,7 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />

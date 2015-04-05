@@ -70,6 +70,7 @@
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\SubClassConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\SubClassPartitionedConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\XmlPropertyConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\GetTests.cs" />
     <Compile Include="NHibernateConfiguration\Helper.cs" />
     <Compile Include="NHibernateConfiguration\SaveInterceptionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

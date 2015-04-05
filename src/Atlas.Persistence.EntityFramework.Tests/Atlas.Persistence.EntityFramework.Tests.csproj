@@ -33,6 +33,7 @@
   <ItemGroup>
     <Compile Include="EntityFrameworkConfiguration\CompareSchemaTests.cs" />
     <Compile Include="EntityFrameworkConfiguration\AuditTests.cs" />
+    <Compile Include="EntityFrameworkConfiguration\GetTests.cs" />
     <Compile Include="EntityFrameworkConfiguration\Configuration\AuditConfiguration.cs" />
     <Compile Include="EntityFrameworkConfiguration\Configuration\AuditCreatedAtOnlyConfiguration.cs" />
     <Compile Include="EntityFrameworkConfiguration\Configuration\AuditCreatedByOnlyConfiguration.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="EntityFrameworkDbContextConfiguration\CompareSchemaTests.cs" />
     <Compile Include="EntityFrameworkDbContextConfiguration\ConcurrencyTests.cs" />
     <Compile Include="EntityFrameworkDbContextConfiguration\EntityQueryableTests.cs" />
+    <Compile Include="EntityFrameworkDbContextConfiguration\GetTests.cs" />
     <Compile Include="EntityFrameworkDbContextConfiguration\PartitionedEntityQueryableTests.cs" />
     <Compile Include="EntityFrameworkDbContextConfiguration\Helper.cs" />
     <Compile Include="EntityFrameworkDbContextConfiguration\CompareContext.cs" />

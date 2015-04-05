@@ -10,11 +10,11 @@ namespace Atlas.Persistence.TestsBase.Entities
 
    public class GuidParent
    {
-      public virtual Guid Guid { get; protected set; }
+      public virtual Guid Guid { get; set; }
 
       [StringLength(50)]
       public virtual string Name { get; set; }
 
-      public virtual DateTime CreatedDateTime { get; protected set; }
+      public virtual DateTime CreatedDateTime { get; set; }
    }
 }

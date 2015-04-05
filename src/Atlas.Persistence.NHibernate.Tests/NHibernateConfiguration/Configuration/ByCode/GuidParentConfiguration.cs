@@ -1,4 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="GuidParentConfiguration.cs" company="Epworth Consulting Ltd.">
 //   © Epworth Consulting Ltd.
 // </copyright>
@@ -14,7 +15,7 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration.Configurati
    {
       public GuidParentConfiguration()
       {
-         this.Id(c => c.Guid, c => { c.Column("GuidParentID"); c.Generator(Generators.GuidComb); });
+         this.Id(c => c.Guid, c => c.Column("GuidParentID"));
 
          this.Property(c => c.Name, c => c.Length(50));
 

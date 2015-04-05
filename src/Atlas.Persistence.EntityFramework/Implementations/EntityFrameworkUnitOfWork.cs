@@ -55,8 +55,9 @@ namespace Atlas.Persistence.EntityFramework.Implementations
       {
          ThrowIf.ArgumentIsNull(entity, "entity");
 
-         Type baseType;
-         this.objectContext.AddObject(this.GetEntitySetName<TEntity>(out baseType), entity);
+         this.objectContext.AddObject(this.GetEntitySetName<TEntity>(), entity);
+
+         var x = this.objectContext.CreateEntityKey(this.GetEntitySetName<TEntity>(), entity);
       }
 
       public void Remove<TEntity>(TEntity entity)
@@ -72,8 +73,7 @@ namespace Atlas.Persistence.EntityFramework.Implementations
       {
          ThrowIf.ArgumentIsNull(entity, "entity");
 
-         Type baseType;
-         this.objectContext.AttachTo(this.GetEntitySetName<TEntity>(out baseType), entity);
+         this.objectContext.AttachTo(this.GetEntitySetName<TEntity>(), entity);
       }
 
       public void Detach<TEntity>(TEntity entity)
@@ -91,7 +91,8 @@ namespace Atlas.Persistence.EntityFramework.Implementations
          where TEntity : class
       {
          Type rootType;
-         var entitySetName = this.GetEntitySetName<TEntity>(out rootType);
+         string[] keyPropertyNames;
+         var entitySetName = this.GetEntitySetName<TEntity>(out rootType, out keyPropertyNames);
 
          if (rootType == typeof(TEntity))
          {
@@ -101,6 +102,42 @@ namespace Atlas.Persistence.EntityFramework.Implementations
          var commandText = string.Format("OFTYPE(({0}),[{1}].[{2}])", entitySetName, typeof(TEntity).Namespace, typeof(TEntity).Name);
 
          return new EntityQueryable<TEntity>(new ObjectQuery<TEntity>(commandText, this.objectContext));
+      }
+
+      public TEntity Get<TEntity, TKey>(TKey key) where TEntity : class where TKey : struct
+      {
+         this.AssertNotDisposed();
+
+         Type rootType;
+         string[] keyPropertyNames;
+         var entitySetName = this.GetEntitySetName<TEntity>(out rootType, out keyPropertyNames);
+
+         if (keyPropertyNames.Length != 1)
+         {
+            throw new NotSupportedException("Cannot Get an entity with a compound key");
+         }
+
+         var qualifiedEntitySetName = string.Format("{0}.{1}", this.objectContext.DefaultContainerName, entitySetName);
+
+         try
+         {
+            var entity = (TEntity)this.objectContext.GetObjectByKey(new EntityKey(qualifiedEntitySetName, keyPropertyNames[0], key));
+            return entity;
+         }
+         catch (ObjectNotFoundException)
+         {
+            return null;
+         }
+      }
+
+      public TEntity Proxy<TEntity, TKey>(TKey key) where TEntity : class where TKey : struct
+      {
+         throw new NotImplementedException();
+      }
+
+      public bool IsProxy<TEntity>(TEntity entity) where TEntity : class
+      {
+         throw new NotImplementedException();
       }
 
       public void Save()
@@ -146,8 +183,15 @@ namespace Atlas.Persistence.EntityFramework.Implementations
          GC.SuppressFinalize(this);
       }
 
+      private string GetEntitySetName<TEntity>()
+      {
+         Type rootType;
+         string[] keyPropertyNames;
+         return this.GetEntitySetName<TEntity>(out rootType, out keyPropertyNames);
+      }
+
       // TODO: Cache these in a dictionary
-      private string GetEntitySetName<TEntity>(out Type rootType)
+      private string GetEntitySetName<TEntity>(out Type rootType, out string[] keyPropertyNames)
       {
          var type = typeof(TEntity);
 
@@ -161,6 +205,7 @@ namespace Atlas.Persistence.EntityFramework.Implementations
             if (entitySet != null)
             {
                rootType = type;
+               keyPropertyNames = entitySet.ElementType.KeyProperties.Select(c => c.Name).ToArray();
                return entitySet.Name;
             }
 
