@@ -41,9 +41,8 @@
     <Compile Include="SqlServerSchema.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Atlas.Core.Logging, Version=0.0.11.0, Culture=neutral, PublicKeyToken=1bc3ca30d350e5c7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Atlas.Core.Logging.0.0.11.0\lib\net451\Atlas.Core.Logging.dll</HintPath>
+    <Reference Include="Atlas.Core">
+      <HintPath>..\..\packages\Atlas.Core.0.0.12.0\lib\net451\Atlas.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <Private>True</Private>

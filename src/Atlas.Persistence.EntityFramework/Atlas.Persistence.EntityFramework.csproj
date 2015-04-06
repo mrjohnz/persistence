@@ -60,8 +60,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Atlas.Core.Logging">
-      <HintPath>..\..\packages\Atlas.Core.Logging.0.0.11.0\lib\net451\Atlas.Core.Logging.dll</HintPath>
+    <Reference Include="Atlas.Core">
+      <HintPath>..\..\packages\Atlas.Core.0.0.12.0\lib\net451\Atlas.Core.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
