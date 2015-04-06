@@ -8,6 +8,7 @@ namespace Atlas.Persistence.NHibernate.Testing
    using System;
    using System.Data.SQLite;
 
+   using Atlas.Core.DateTime;
    using Atlas.Core.Logging;
    using Atlas.Persistence;
    using Atlas.Persistence.NHibernate;
@@ -22,7 +23,7 @@ namespace Atlas.Persistence.NHibernate.Testing
       private readonly ISessionFactory sessionFactory;
       private readonly IInterceptUnitOfWork[] interceptors;
       private readonly IAuditConfiguration auditConfiguration;
-      private readonly IDateTimeFacility dateTimeFacility;
+      private readonly IDateTime dateTime;
       private readonly IUserContext userContext;
       private readonly ILogger logger;
       private readonly SQLiteConnection connection;
@@ -33,7 +34,7 @@ namespace Atlas.Persistence.NHibernate.Testing
          INHibernatePersistenceConfiguration configuration,
          IInterceptUnitOfWork[] interceptors,
          IAuditConfiguration auditConfiguration,
-         IDateTimeFacility dateTimeFacility,
+         IDateTime dateTime,
          IUserContext userContext,
          ILogger logger)
       {
@@ -43,7 +44,7 @@ namespace Atlas.Persistence.NHibernate.Testing
          this.sessionFactory = configuration.CreateSessionFactory();
          this.interceptors = interceptors;
          this.auditConfiguration = auditConfiguration;
-         this.dateTimeFacility = dateTimeFacility;
+         this.dateTime = dateTime;
          this.userContext = userContext;
          this.logger = logger;
 
@@ -65,7 +66,7 @@ namespace Atlas.Persistence.NHibernate.Testing
       {
          this.AssertNotDisposed();
 
-         var transaction = new NHibernateTransaction(this.sessionFactory, this.connection, this.interceptors, this.auditConfiguration, this.dateTimeFacility, this.userContext, this.logger);
+         var transaction = new NHibernateTransaction(this.sessionFactory, this.connection, this.interceptors, this.auditConfiguration, this.dateTime, this.userContext, this.logger);
          
          return new NHibernateUnitOfWork(transaction, this.logger);
       }

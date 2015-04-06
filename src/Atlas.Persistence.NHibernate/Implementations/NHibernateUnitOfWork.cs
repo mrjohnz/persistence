@@ -7,6 +7,7 @@ namespace Atlas.Persistence.NHibernate.Implementations
 {
    using System;
 
+   using Atlas.Core.DateTime;
    using Atlas.Core.Logging;
    using Atlas.Persistence;
 
@@ -182,7 +183,7 @@ namespace Atlas.Persistence.NHibernate.Implementations
          private readonly ISessionFactory sessionFactory;
          private readonly IInterceptUnitOfWork[] interceptors;
          private readonly IAuditConfiguration auditConfiguration;
-         private readonly IDateTimeFacility dateTimeFacility;
+         private readonly IDateTime dateTime;
          private readonly IUserContext userContext;
          private readonly ILogger logger;
 
@@ -190,7 +191,7 @@ namespace Atlas.Persistence.NHibernate.Implementations
             INHibernatePersistenceConfiguration configuration,
             IInterceptUnitOfWork[] interceptors,
             IAuditConfiguration auditConfiguration,
-            IDateTimeFacility dateTimeFacility,
+            IDateTime dateTime,
             IUserContext userContext,
             ILogger logger)
          {
@@ -200,14 +201,14 @@ namespace Atlas.Persistence.NHibernate.Implementations
             this.sessionFactory = configuration.CreateSessionFactory();
             this.interceptors = interceptors;
             this.auditConfiguration = auditConfiguration;
-            this.dateTimeFacility = dateTimeFacility;
+            this.dateTime = dateTime;
             this.userContext = userContext;
             this.logger = logger;
          }
          
          public IUnitOfWork Create()
          {
-            var transaction = new NHibernateTransaction(this.sessionFactory, null, this.interceptors, this.auditConfiguration, this.dateTimeFacility, this.userContext, this.logger);
+            var transaction = new NHibernateTransaction(this.sessionFactory, null, this.interceptors, this.auditConfiguration, this.dateTime, this.userContext, this.logger);
 
             return new NHibernateUnitOfWork(transaction, this.logger);
          }

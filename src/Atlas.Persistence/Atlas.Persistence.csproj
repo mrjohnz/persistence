@@ -39,10 +39,8 @@
   <ItemGroup>
     <Compile Include="IAuditConfiguration.cs" />
     <Compile Include="ConcurrencyException.cs" />
-    <Compile Include="IDateTimeFacility.cs" />
     <Compile Include="IEntityQueryable.cs" />
     <Compile Include="Implementations\AuditConfiguration.cs" />
-    <Compile Include="Implementations\DateTimeFacility.cs" />
     <Compile Include="Implementations\EntityQueryableBase.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="IUnitOfWorkFactory.cs" />

@@ -9,6 +9,7 @@ namespace Atlas.Persistence.TestsBase
    using System;
    using System.Linq;
 
+   using Atlas.Core.DateTime;
    using Atlas.Persistence.Implementations;
    using Atlas.Persistence.Testing;
    using Atlas.Persistence.TestsBase.Entities;
@@ -18,7 +19,7 @@ namespace Atlas.Persistence.TestsBase
    public abstract class AuditTestsBase
    {
       private AuditConfiguration auditConfiguration;
-      private StubDateTimeFacility dateTimeFacility;
+      private StubDateTime dateTime;
       private StubUserContext userContext;
       private IUnitOfWorkFactory unitOfWorkFactory;
       private Guid userGuid;
@@ -27,7 +28,7 @@ namespace Atlas.Persistence.TestsBase
       public void SetupBeforeEachTest()
       {
          this.auditConfiguration = new AuditConfiguration();
-         this.dateTimeFacility = new StubDateTimeFacility();
+         this.dateTime = new StubDateTime();
          this.userContext = new StubUserContext();
 
          this.auditConfiguration
@@ -39,7 +40,7 @@ namespace Atlas.Persistence.TestsBase
             .AuditModifiedDateTime<AuditModifiedAtOnly>(c => c.ModifiedDateTime)
             .AuditModifiedUserGuid<AuditModifiedByOnly>(c => c.ModifiedUserGuid);
 
-         this.unitOfWorkFactory = this.CreateUnitOfWorkFactory(this.auditConfiguration, this.dateTimeFacility, this.userContext);
+         this.unitOfWorkFactory = this.CreateUnitOfWorkFactory(this.auditConfiguration, this.dateTime, this.userContext);
          this.userGuid = Guid.Parse("623EE11A-D28F-41b4-A493-74368F648C8D");
          this.userContext.UserGuid = this.userGuid;
       }
@@ -110,7 +111,7 @@ namespace Atlas.Persistence.TestsBase
          this.Modify<Audit>(a => a.ModifiedUserGuid, a => a.ModifiedDateTime);
       }
 
-      protected abstract IUnitOfWorkFactory CreateUnitOfWorkFactory(IAuditConfiguration auditConfiguration, IDateTimeFacility dateTimeFacility, IUserContext userContext);
+      protected abstract IUnitOfWorkFactory CreateUnitOfWorkFactory(IAuditConfiguration auditConfiguration, IDateTime dateTime, IUserContext userContext);
 
       private void Create<T>(
          Func<T, Guid> createdByUserGuid = null, 
@@ -121,7 +122,7 @@ namespace Atlas.Persistence.TestsBase
       {
          long auditId;
 
-         this.dateTimeFacility.CurrentTime = new DateTime(2010, 3, 23, 1, 2, 3, 111);
+         this.dateTime.DateTime = new DateTime(2010, 3, 23, 1, 2, 3, 111);
 
          using (var unitOfWork = this.unitOfWorkFactory.Create())
          {
@@ -166,7 +167,7 @@ namespace Atlas.Persistence.TestsBase
       {
          long auditId;
 
-         this.dateTimeFacility.CurrentTime = new DateTime(2010, 3, 23, 1, 2, 3, 111);
+         this.dateTime.DateTime = new DateTime(2010, 3, 23, 1, 2, 3, 111);
 
          using (var unitOfWork = this.unitOfWorkFactory.Create())
          {
@@ -178,7 +179,7 @@ namespace Atlas.Persistence.TestsBase
             auditId = audit.ID;
          }
 
-         this.dateTimeFacility.CurrentTime = new DateTime(2011, 4, 19, 4, 5, 6, 222);
+         this.dateTime.DateTime = new DateTime(2011, 4, 19, 4, 5, 6, 222);
 
          using (var unitOfWork = this.unitOfWorkFactory.Create())
          {
@@ -205,9 +206,11 @@ namespace Atlas.Persistence.TestsBase
          }
       }
 
-      private class StubDateTimeFacility : IDateTimeFacility
+      private class StubDateTime : IDateTime
       {
-         public DateTime CurrentTime { get; set; }
+         public DateTime Date { get; set; }
+
+         public DateTime DateTime { get; set; }
       }
 
       private class StubUserContext : IUserContext

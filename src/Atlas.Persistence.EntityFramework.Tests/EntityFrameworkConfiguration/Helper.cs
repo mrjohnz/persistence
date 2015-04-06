@@ -7,6 +7,7 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration
 {
    using System.Collections.Generic;
 
+   using Atlas.Core.DateTime;
    using Atlas.Core.Logging;
    using Atlas.Persistence;
    using Atlas.Persistence.EntityFramework.Implementations;
@@ -17,7 +18,7 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration
       public static IUnitOfWorkFactory CreateUnitOfWorkFactory(
          IInterceptUnitOfWork interceptor = null,
          IAuditConfiguration auditConfiguration = null,
-         IDateTimeFacility dateTimeFacility = null,
+         IDateTime dateTime = null,
          IUserContext userContext = null)
       {
          var configuration = new EntityFrameworkConfiguration();
@@ -35,7 +36,7 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration
 
          if (auditConfiguration != null)
          {
-            interceptors.Add(new EntityFrameworkAuditInterceptor(auditConfiguration, dateTimeFacility, userContext));
+            interceptors.Add(new EntityFrameworkAuditInterceptor(auditConfiguration, dateTime, userContext));
          }
 
          return new EntityFrameworkUnitOfWork.Factory(configuration, interceptors.ToArray(), new ConsoleLogger { DebugLoggingIsEnabled = false });

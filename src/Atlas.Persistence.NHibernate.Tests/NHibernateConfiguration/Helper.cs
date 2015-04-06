@@ -8,6 +8,7 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
    using System.Collections.Generic;
    using System.Reflection;
 
+   using Atlas.Core.DateTime;
    using Atlas.Core.Logging;
    using Atlas.Persistence;
    using Atlas.Persistence.NHibernate.ByteCode.Castle;
@@ -20,7 +21,7 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
       public static IUnitOfWorkFactory CreateUnitOfWorkFactory(
          IInterceptUnitOfWork interceptor = null,
          IAuditConfiguration auditConfiguration = null,
-         IDateTimeFacility dateTimeFacility = null,
+         IDateTime dateTime = null,
          IUserContext userContext = null)
       {
          var logger = new ConsoleLogger { DebugLoggingIsEnabled = false };
@@ -43,7 +44,7 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
             interceptors.Add(interceptor);
          }
 
-         return new NHibernateUnitOfWork.Factory(configuration, interceptors.ToArray(), auditConfiguration, dateTimeFacility, userContext, logger);
+         return new NHibernateUnitOfWork.Factory(configuration, interceptors.ToArray(), auditConfiguration, dateTime, userContext, logger);
       }
    }
 }

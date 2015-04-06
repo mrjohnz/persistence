@@ -7,6 +7,8 @@ namespace Atlas.Persistence.NHibernate.Implementations
 {
    using System;
 
+   using Atlas.Core.DateTime;
+
    using global::NHibernate;
    using global::NHibernate.Proxy;
    using global::NHibernate.Type;
@@ -15,18 +17,18 @@ namespace Atlas.Persistence.NHibernate.Implementations
    {
       private readonly IInterceptUnitOfWork[] interceptors;
       private readonly IAuditConfiguration auditConfiguration;
-      private readonly IDateTimeFacility dateTimeFacility;
+      private readonly IDateTime dateTime;
       private readonly IUserContext userContext;
 
       public SessionInterceptor(
          IInterceptUnitOfWork[] interceptors,
          IAuditConfiguration auditConfiguration,
-         IDateTimeFacility dateTimeFacility,
+         IDateTime dateTime,
          IUserContext userContext)
       {
          this.interceptors = interceptors;
          this.auditConfiguration = auditConfiguration;
-         this.dateTimeFacility = dateTimeFacility;
+         this.dateTime = dateTime;
          this.userContext = userContext;
       }
 
@@ -34,12 +36,12 @@ namespace Atlas.Persistence.NHibernate.Implementations
       {
          if (this.auditConfiguration != null)
          {
-            var dateTime = this.dateTimeFacility.CurrentTime;
+            var auditDateTime = this.dateTime.DateTime;
             var userGuid = this.userContext.UserGuid;
             var entityType = GetConcreteType(entity);
 
-            this.AuditCreated(entityType, entity, dateTime, userGuid, propertyNames, state);
-            this.AuditModified(entityType, entity, dateTime, userGuid, propertyNames, state);
+            this.AuditCreated(entityType, entity, auditDateTime, userGuid, propertyNames, state);
+            this.AuditModified(entityType, entity, auditDateTime, userGuid, propertyNames, state);
          }
 
          foreach (var interceptor in this.interceptors)
@@ -54,11 +56,11 @@ namespace Atlas.Persistence.NHibernate.Implementations
       {
          if (this.auditConfiguration != null)
          {
-            var dateTime = this.dateTimeFacility.CurrentTime;
+            var auditDateTime = this.dateTime.DateTime;
             var userGuid = this.userContext.UserGuid;
             var entityType = GetConcreteType(entity);
 
-            this.AuditModified(entityType, entity, dateTime, userGuid, propertyNames, currentState);
+            this.AuditModified(entityType, entity, auditDateTime, userGuid, propertyNames, currentState);
          }
 
          foreach (var interceptor in this.interceptors)

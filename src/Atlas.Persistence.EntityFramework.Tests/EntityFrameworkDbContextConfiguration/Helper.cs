@@ -7,6 +7,7 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkDbContextConfig
 {
    using System.Collections.Generic;
 
+   using Atlas.Core.DateTime;
    using Atlas.Core.Logging;
    using Atlas.Persistence;
    using Atlas.Persistence.EntityFramework.Implementations;
@@ -16,7 +17,7 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkDbContextConfig
       public static IUnitOfWorkFactory CreateUnitOfWorkFactory(
          IInterceptUnitOfWork interceptor = null,
          IAuditConfiguration auditConfiguration = null,
-         IDateTimeFacility dateTimeFacility = null,
+         IDateTime dateTime = null,
          IUserContext userContext = null)
       {
          var configuration = new EntityFrameworkDbContextConfiguration<CompareContext>(connectionStringOrName => new CompareContext(connectionStringOrName));
@@ -32,7 +33,7 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkDbContextConfig
 
          if (auditConfiguration != null)
          {
-            interceptors.Add(new EntityFrameworkAuditInterceptor(auditConfiguration, dateTimeFacility, userContext));
+            interceptors.Add(new EntityFrameworkAuditInterceptor(auditConfiguration, dateTime, userContext));
          }
 
          return new EntityFrameworkUnitOfWork.Factory(configuration, interceptors.ToArray(), new ConsoleLogger { DebugLoggingIsEnabled = false });

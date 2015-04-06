@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration
 {
+   using Atlas.Core.DateTime;
    using Atlas.Persistence.TestsBase;
 
    using NUnit.Framework;
@@ -12,9 +13,9 @@ namespace Atlas.Persistence.EntityFramework.Tests.EntityFrameworkConfiguration
    [TestFixture]
    public class AuditTests : AuditTestsBase
    {
-      protected override IUnitOfWorkFactory CreateUnitOfWorkFactory(IAuditConfiguration auditConfiguration, IDateTimeFacility dateTimeFacility, IUserContext userContext)
+      protected override IUnitOfWorkFactory CreateUnitOfWorkFactory(IAuditConfiguration auditConfiguration, IDateTime dateTime, IUserContext userContext)
       {
-         return Helper.CreateUnitOfWorkFactory(auditConfiguration: auditConfiguration, dateTimeFacility: dateTimeFacility, userContext: userContext);
+         return Helper.CreateUnitOfWorkFactory(auditConfiguration: auditConfiguration, dateTime: dateTime, userContext: userContext);
       }
    }
 }

@@ -60,6 +60,9 @@
     <Compile Include="SaveInterceptionTestsBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Atlas.Core">
+      <HintPath>..\..\packages\Atlas.Core.0.0.12.0\lib\net451\Atlas.Core.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>

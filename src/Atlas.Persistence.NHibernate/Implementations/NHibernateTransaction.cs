@@ -8,6 +8,7 @@ namespace Atlas.Persistence.NHibernate.Implementations
    using System;
    using System.Data;
 
+   using Atlas.Core.DateTime;
    using Atlas.Core.Logging;
    using Atlas.Persistence.NHibernate;
 
@@ -26,22 +27,22 @@ namespace Atlas.Persistence.NHibernate.Implementations
          IDbConnection connection,
          IInterceptUnitOfWork[] interceptors,
          IAuditConfiguration auditConfiguration,
-         IDateTimeFacility dateTimeFacility,
+         IDateTime dateTime,
          IUserContext userContext,
          ILogger logger)
       {
          ThrowIf.ArgumentIsNull(sessionFactory, "sessionFactory");
          ThrowIf.ArgumentIsNull(logger, "logger");
 
-         if ((interceptors != null && interceptors.Length != 0) || (auditConfiguration != null && dateTimeFacility != null && userContext != null))
+         if ((interceptors != null && interceptors.Length != 0) || (auditConfiguration != null && dateTime != null && userContext != null))
          {
             if (connection != null)
             {
-               this.session = sessionFactory.OpenSession(connection, new SessionInterceptor(interceptors, auditConfiguration, dateTimeFacility, userContext));
+               this.session = sessionFactory.OpenSession(connection, new SessionInterceptor(interceptors, auditConfiguration, dateTime, userContext));
             }
             else
             {
-               this.session = sessionFactory.OpenSession(new SessionInterceptor(interceptors, auditConfiguration, dateTimeFacility, userContext));
+               this.session = sessionFactory.OpenSession(new SessionInterceptor(interceptors, auditConfiguration, dateTime, userContext));
             }
          }
          else if (connection != null)
