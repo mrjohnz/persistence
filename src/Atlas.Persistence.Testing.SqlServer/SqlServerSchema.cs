@@ -257,6 +257,12 @@ namespace Atlas.Persistence.Testing.SqlServer
             this.wrappedLog.LogInfo(message, args);
          }
 
+         public void LogError(string format, params object[] args)
+         {
+            this.wrappedLog.LogError(format, args);
+            this.Errors = true;
+         }
+
          public void LogWarning(string message, params object[] args)
          {
             this.wrappedLog.LogWarning(message, args);
