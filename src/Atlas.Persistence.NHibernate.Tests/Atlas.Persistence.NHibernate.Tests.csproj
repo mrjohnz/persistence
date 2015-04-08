@@ -84,8 +84,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Atlas.Core">
-      <HintPath>..\..\packages\Atlas.Core.0.0.12.0\lib\net451\Atlas.Core.dll</HintPath>
+    <Reference Include="Atlas.Core, Version=0.0.14.0, Culture=neutral, PublicKeyToken=1bc3ca30d350e5c7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Atlas.Core.0.0.14.0\lib\net451\Atlas.Core.dll</HintPath>
     </Reference>
     <Reference Include="FakeItEasy">
       <HintPath>..\..\packages\FakeItEasy.1.25.2\lib\net40\FakeItEasy.dll</HintPath>
