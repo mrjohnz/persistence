@@ -26,7 +26,7 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
    public class ConventionTests
    {
       private FluentMapperConfigurer fluentMapperConfigurer;
-      private INHibernatePersistenceConfiguration persistenceConfiguration;
+      private INHibernatePersistenceConfiguration configuration;
 
       [SetUp]
       public void SetupBeforeEachTest()
@@ -35,24 +35,27 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
             .RegisterConvention<SQLiteXElementConvention>()
             .RegisterEntitiesFromAssemblyOf<ConventionTests>();
 
-         this.persistenceConfiguration = new NHibernateConfiguration(new ConsoleLogger());
-         this.persistenceConfiguration.RegisterConfigurer(new SQLiteDatabaseConfigurer());
-         this.persistenceConfiguration.RegisterConfigurer(this.fluentMapperConfigurer);
-         this.persistenceConfiguration.RegisterConfigurer(new ProxyConfigurer<CastleProxyFactoryFactory>());
+         this.configuration = new NHibernateConfiguration(new ConsoleLogger());
+         this.configuration.RegisterConfigurer(new SQLiteDatabaseConfigurer());
+         this.configuration.RegisterConfigurer(this.fluentMapperConfigurer);
+         this.configuration.RegisterConfigurer(new ProxyConfigurer<CastleProxyFactoryFactory>());
       }
 
       [Test]
       public void ExceptionThrownIfIgnoreVersionConventionNotRegistered()
       {
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            using (var unitOfWork = unitOfWorkFactory.Create())
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
             {
-               var safeUnitOfWork = unitOfWork;
+               using (var unitOfWork = unitOfWorkFactory.Create())
+               {
+                  var safeUnitOfWork = unitOfWork;
 
-               var optimistic = new Optimistic { StringValue = "test" };
+                  var optimistic = new Optimistic { StringValue = "test" };
 
-               Assert.That(() => safeUnitOfWork.Add(optimistic), Throws.InstanceOf<PropertyValueException>());
+                  Assert.That(() => safeUnitOfWork.Add(optimistic), Throws.InstanceOf<PropertyValueException>());
+               }
             }
          }
       }
@@ -64,26 +67,28 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
 
          var dateTime = new DateTime(2012, 12, 19, 21, 56, 7, 456);
 
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            long fooId;
-
-            using (var unitOfWork = unitOfWorkFactory.Create())
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
             {
-               var foo = new Foo { DateTimeValue = dateTime };
+               long fooId;
 
-               unitOfWork.Add(foo);
-               unitOfWork.Save();
+               using (var unitOfWork = unitOfWorkFactory.Create())
+               {
+                  var foo = new Foo { DateTimeValue = dateTime };
 
-               fooId = foo.ID;
-            }
+                  unitOfWork.Add(foo);
+                  unitOfWork.Save();
 
-            using (var unitOfWork = unitOfWorkFactory.Create())
-            {
-               var foo = unitOfWork.Query<Foo>()
-                  .Single(c => c.ID == fooId);
+                  fooId = foo.ID;
+               }
 
-               Assert.AreEqual(dateTime, foo.DateTimeValue);
+               using (var unitOfWork = unitOfWorkFactory.Create())
+               {
+                  var foo = unitOfWork.Query<Foo>().Single(c => c.ID == fooId);
+
+                  Assert.AreEqual(dateTime, foo.DateTimeValue);
+               }
             }
          }
       }

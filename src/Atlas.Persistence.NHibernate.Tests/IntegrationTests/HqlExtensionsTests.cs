@@ -23,7 +23,7 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
 
    public class HqlExtensionsTests
    {
-      private INHibernatePersistenceConfiguration persistenceConfiguration;
+      private INHibernatePersistenceConfiguration configuration;
 
       [SetUp]
       public void SetupBeforeEachTest()
@@ -32,40 +32,41 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
             .RegisterConvention<SQLiteXElementConvention>()
             .RegisterEntitiesFromAssemblyOf<HqlExtensionsTests>();
 
-         this.persistenceConfiguration = new NHibernateConfiguration(new ConsoleLogger());
-         this.persistenceConfiguration.RegisterConfigurer(new SQLiteDatabaseConfigurer());
-         this.persistenceConfiguration.RegisterConfigurer(fluentMapperConfigurer);
-         this.persistenceConfiguration.RegisterConfigurer(new ProxyConfigurer<CastleProxyFactoryFactory>());
+         this.configuration = new NHibernateConfiguration(new ConsoleLogger());
+         this.configuration.RegisterConfigurer(new SQLiteDatabaseConfigurer());
+         this.configuration.RegisterConfigurer(fluentMapperConfigurer);
+         this.configuration.RegisterConfigurer(new ProxyConfigurer<CastleProxyFactoryFactory>());
       }
 
       [Test]
       public void IfExtensionMethodCanBeUsedWithinTheSumAggregateMethod()
       {
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, null)", Guid.NewGuid()));
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, null)", Guid.NewGuid()));
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, 1)", Guid.NewGuid()));
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, 2)", Guid.NewGuid()));
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, 3)", Guid.NewGuid()));
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 1, null)", Guid.NewGuid()));
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 1, 1)", Guid.NewGuid()));
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 1, 2)", Guid.NewGuid()));
-
-            using (var unitOfWork = unitOfWorkFactory.Create())
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
             {
-               var x = unitOfWork.Query<Foo>()
-                  .GroupBy(c => c.IntEnum)
-                  .Select(c => new Tuple<IntEnum, int, int>(c.Key, c.Count(), c.Sum(d => Extensions.If(d.IntValue == null, 0, 1))))
-                  .ToList();
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, null)", Guid.NewGuid()));
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, null)", Guid.NewGuid()));
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, 1)", Guid.NewGuid()));
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, 2)", Guid.NewGuid()));
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, 3)", Guid.NewGuid()));
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 1, null)", Guid.NewGuid()));
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 1, 1)", Guid.NewGuid()));
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 1, 2)", Guid.NewGuid()));
 
-               Assert.AreEqual(2, x.Count);
-               Assert.AreEqual(IntEnum.Zero, x[0].Item1);
-               Assert.AreEqual(5, x[0].Item2);
-               Assert.AreEqual(3, x[0].Item3);
-               Assert.AreEqual(IntEnum.One, x[1].Item1);
-               Assert.AreEqual(3, x[1].Item2);
-               Assert.AreEqual(2, x[1].Item3);
+               using (var unitOfWork = unitOfWorkFactory.Create())
+               {
+                  var x =
+                     unitOfWork.Query<Foo>().GroupBy(c => c.IntEnum).Select(c => new Tuple<IntEnum, int, int>(c.Key, c.Count(), c.Sum(d => Extensions.If(d.IntValue == null, 0, 1)))).ToList();
+
+                  Assert.AreEqual(2, x.Count);
+                  Assert.AreEqual(IntEnum.Zero, x[0].Item1);
+                  Assert.AreEqual(5, x[0].Item2);
+                  Assert.AreEqual(3, x[0].Item3);
+                  Assert.AreEqual(IntEnum.One, x[1].Item1);
+                  Assert.AreEqual(3, x[1].Item2);
+                  Assert.AreEqual(2, x[1].Item3);
+               }
             }
          }
       }
@@ -73,30 +74,34 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
       [Test]
       public void IfExtensionMethodCanBeUsedWithReferenceProperty()
       {
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, null)", Guid.NewGuid()));
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, null)", Guid.NewGuid()));
-
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into BaseClass (Guid, IntEnum, FooID) values ('{0}', 0, null)", Guid.NewGuid()));
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into BaseClass (Guid, IntEnum, FooID) values ('{0}', 0, 1)", Guid.NewGuid()));
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into BaseClass (Guid, IntEnum, FooID) values ('{0}', 0, 2)", Guid.NewGuid()));
-            unitOfWorkFactory.ExecuteSql(string.Format("insert into BaseClass (Guid, IntEnum, FooID) values ('{0}', 1, 2)", Guid.NewGuid()));
-
-            using (var unitOfWork = unitOfWorkFactory.Create())
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
             {
-               var x = unitOfWork.Query<BaseClass>()
-                  .GroupBy(c => c.IntEnum)
-                  .Select(c => new Tuple<IntEnum, int, int>(c.Key, c.Count(), c.Sum(d => Extensions.If(d.Foo == null, 0, 1))))
-                  .ToList();
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, null)", Guid.NewGuid()));
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into Foo (Guid, IntEnum, IntValue) values ('{0}', 0, null)", Guid.NewGuid()));
 
-               Assert.AreEqual(2, x.Count);
-               Assert.AreEqual(IntEnum.Zero, x[0].Item1);
-               Assert.AreEqual(3, x[0].Item2);
-               Assert.AreEqual(2, x[0].Item3);
-               Assert.AreEqual(IntEnum.One, x[1].Item1);
-               Assert.AreEqual(1, x[1].Item2);
-               Assert.AreEqual(1, x[1].Item3);
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into BaseClass (Guid, IntEnum, FooID) values ('{0}', 0, null)", Guid.NewGuid()));
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into BaseClass (Guid, IntEnum, FooID) values ('{0}', 0, 1)", Guid.NewGuid()));
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into BaseClass (Guid, IntEnum, FooID) values ('{0}', 0, 2)", Guid.NewGuid()));
+               unitOfWorkFactory.ExecuteSql(string.Format("insert into BaseClass (Guid, IntEnum, FooID) values ('{0}', 1, 2)", Guid.NewGuid()));
+
+               using (var unitOfWork = unitOfWorkFactory.Create())
+               {
+                  var x =
+                     unitOfWork.Query<BaseClass>()
+                        .GroupBy(c => c.IntEnum)
+                        .Select(c => new Tuple<IntEnum, int, int>(c.Key, c.Count(), c.Sum(d => Extensions.If(d.Foo == null, 0, 1))))
+                        .ToList();
+
+                  Assert.AreEqual(2, x.Count);
+                  Assert.AreEqual(IntEnum.Zero, x[0].Item1);
+                  Assert.AreEqual(3, x[0].Item2);
+                  Assert.AreEqual(2, x[0].Item3);
+                  Assert.AreEqual(IntEnum.One, x[1].Item1);
+                  Assert.AreEqual(1, x[1].Item2);
+                  Assert.AreEqual(1, x[1].Item3);
+               }
             }
          }
       }

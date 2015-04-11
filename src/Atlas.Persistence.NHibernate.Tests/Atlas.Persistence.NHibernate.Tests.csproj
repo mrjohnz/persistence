@@ -61,6 +61,7 @@
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\AuditModifiedConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\BaseClassConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\BaseClassPartitionedConfiguration.cs" />
+    <Compile Include="NHibernateConfiguration\Configuration\Fluent\BarConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\FooConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\FooPartitionedConfiguration.cs" />
     <Compile Include="NHibernateConfiguration\Configuration\Fluent\GuidChildConfiguration.cs" />
@@ -121,6 +122,7 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />

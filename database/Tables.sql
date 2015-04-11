@@ -83,6 +83,15 @@ CREATE TABLE [dbo].[AuditModifiedByOnly]
 ) ON [PRIMARY]
 GO
 
+PRINT 'Creating Table Bar'
+--
+CREATE TABLE [dbo].[Bar]
+(
+   [BarID] [bigint]        NOT NULL IDENTITY(1,1),
+	 [Name]  [nvarchar] (50) NOT NULL
+) ON [PRIMARY]
+GO
+
 PRINT 'Creating Table BaseClass'
 --
 CREATE TABLE [dbo].[BaseClass]

@@ -39,6 +39,7 @@
     <Compile Include="Entities\AuditModified.cs" />
     <Compile Include="Entities\AuditModifiedAtOnly.cs" />
     <Compile Include="Entities\AuditModifiedByOnly.cs" />
+    <Compile Include="Entities\Bar.cs" />
     <Compile Include="Entities\BaseClass.cs" />
     <Compile Include="Entities\BaseClassPartitioned.cs" />
     <Compile Include="Entities\Foo.cs" />

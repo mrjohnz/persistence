@@ -32,6 +32,7 @@ namespace Atlas.Persistence.NHibernate.Testing
 
       public SQLiteUnitOfWorkFactory(
          INHibernatePersistenceConfiguration configuration,
+         ISessionFactory sessionFactory,
          IInterceptUnitOfWork[] interceptors,
          IAuditConfiguration auditConfiguration,
          IDateTime dateTime,
@@ -39,9 +40,10 @@ namespace Atlas.Persistence.NHibernate.Testing
          ILogger logger)
       {
          ThrowIf.ArgumentIsNull(configuration, "configuration");
+         ThrowIf.ArgumentIsNull(sessionFactory, "sessionFactory");
          ThrowIf.ArgumentIsNull(logger, "logger");
 
-         this.sessionFactory = configuration.CreateSessionFactory();
+         this.sessionFactory = sessionFactory;
          this.interceptors = interceptors;
          this.auditConfiguration = auditConfiguration;
          this.dateTime = dateTime;
@@ -52,7 +54,7 @@ namespace Atlas.Persistence.NHibernate.Testing
          // new instance of NHibernateUnitOfWork.
          this.connection = new SQLiteConnection(SQLiteDatabaseConfigurer.InMemoryConnectionString);
          this.connection.Open();
-
+         
          // Create the schema in the connection based on the NHibernate mappings
          configuration.CreateSchema(this.connection);
       }

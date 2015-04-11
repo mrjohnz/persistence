@@ -47,7 +47,7 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
    {
       private AtlasAutoMappingConfiguration automappingConfiguration;
       private FluentAutoMapperConfigurer fluentMapperConfigurer;
-      private INHibernatePersistenceConfiguration persistenceConfiguration;
+      private INHibernatePersistenceConfiguration configuration;
 
       [SetUp]
       public void SetupBeforeEachTest()
@@ -56,10 +56,10 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
          this.fluentMapperConfigurer = new FluentAutoMapperConfigurer();
          this.fluentMapperConfigurer.AutoMappingConfiguration(this.automappingConfiguration);
 
-         this.persistenceConfiguration = new NHibernateConfiguration(new ConsoleLogger());
-         this.persistenceConfiguration.RegisterConfigurer(new SQLiteDatabaseConfigurer());
-         this.persistenceConfiguration.RegisterConfigurer(this.fluentMapperConfigurer);
-         this.persistenceConfiguration.RegisterConfigurer(new ProxyConfigurer<CastleProxyFactoryFactory>());
+         this.configuration = new NHibernateConfiguration(new ConsoleLogger());
+         this.configuration.RegisterConfigurer(new SQLiteDatabaseConfigurer());
+         this.configuration.RegisterConfigurer(this.fluentMapperConfigurer);
+         this.configuration.RegisterConfigurer(new ProxyConfigurer<CastleProxyFactoryFactory>());
       }
 
       [Test]
@@ -68,11 +68,14 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
          this.automappingConfiguration.ShouldMapType(c => c == typeof(Foo));
          this.fluentMapperConfigurer.AutoMapEntitiesFromAssemblyOf<Foo>();
 
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            var entity = this.PersistEntity(unitOfWorkFactory, () => new Foo { StringValue = "myValue" });
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
+            {
+               var entity = PersistEntity(unitOfWorkFactory, () => new Foo { StringValue = "myValue" });
 
-            Assert.AreEqual(1, entity.ID);
+               Assert.AreEqual(1, entity.ID);
+            }
          }
       }
 
@@ -82,13 +85,16 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
          this.automappingConfiguration.ShouldMapType(c => c == typeof(Foo));
          this.fluentMapperConfigurer.AutoMapEntitiesFromAssemblyOf<Foo>();
 
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            var persistedEntity = this.PersistEntity(unitOfWorkFactory, () => new Foo { StringValue = "myValue" });
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
+            {
+               var persistedEntity = PersistEntity(unitOfWorkFactory, () => new Foo { StringValue = "myValue" });
 
-            var entity = this.LoadEntity<Foo>(unitOfWorkFactory, c => c.ID == persistedEntity.ID);
+               var entity = LoadEntity<Foo>(unitOfWorkFactory, c => c.ID == persistedEntity.ID);
 
-            Assert.AreEqual(persistedEntity.StringValue, entity.StringValue);
+               Assert.AreEqual(persistedEntity.StringValue, entity.StringValue);
+            }
          }
       }
 
@@ -98,16 +104,19 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
          this.automappingConfiguration.ShouldMapType(c => c == typeof(Foo));
          this.fluentMapperConfigurer.AutoMapEntitiesFromAssemblyOf<Foo>();
 
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            var persistedEntity = this.PersistEntity(unitOfWorkFactory, () => new Foo { StringValue = "myValue" });
-
-            using (var unitOfWork = unitOfWorkFactory.Create())
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
             {
-               unitOfWork.Attach(persistedEntity);
+               var persistedEntity = PersistEntity(unitOfWorkFactory, () => new Foo { StringValue = "myValue" });
 
-               persistedEntity.StringValue = "newStringValue";
-               unitOfWork.Save();
+               using (var unitOfWork = unitOfWorkFactory.Create())
+               {
+                  unitOfWork.Attach(persistedEntity);
+
+                  persistedEntity.StringValue = "newStringValue";
+                  unitOfWork.Save();
+               }
             }
          }
       }
@@ -119,9 +128,12 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
          this.automappingConfiguration.ShouldMapType(c => false);
          this.fluentMapperConfigurer.AutoMapEntitiesFromAssemblyOf<Foo>();
 
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            this.PersistEntity(unitOfWorkFactory, () => new Foo { StringValue = "myValue" });
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
+            {
+               PersistEntity(unitOfWorkFactory, () => new Foo { StringValue = "myValue" });
+            }
          }
       }
 
@@ -131,11 +143,14 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
          this.automappingConfiguration.ShouldMapType(c => c == typeof(Optimistic));
          this.fluentMapperConfigurer.AutoMapEntitiesFromAssemblyOf<Optimistic>();
 
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            var entity = this.PersistEntity(unitOfWorkFactory, () => new Optimistic { StringValue = "myValue" });
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
+            {
+               var entity = PersistEntity(unitOfWorkFactory, () => new Optimistic { StringValue = "myValue" });
 
-            Assert.AreEqual(1, entity.ID);
+               Assert.AreEqual(1, entity.ID);
+            }
          }
       }
 
@@ -149,9 +164,12 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
          this.fluentMapperConfigurer.AutoMappingConfiguration(myAutomappingConfiguration);
          this.fluentMapperConfigurer.AutoMapEntitiesFromAssemblyOf<Optimistic>();
 
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            this.PersistEntity(unitOfWorkFactory, () => new Optimistic { StringValue = "myValue" });
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
+            {
+               PersistEntity(unitOfWorkFactory, () => new Optimistic { StringValue = "myValue" });
+            }
          }
       }
 
@@ -161,13 +179,16 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
          this.automappingConfiguration.ShouldMapType(c => c == typeof(Optimistic));
          this.fluentMapperConfigurer.AutoMapEntitiesFromAssemblyOf<Optimistic>();
 
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            var persistedEntity = this.PersistEntity(unitOfWorkFactory, () => new Optimistic { StringValue = "myValue" });
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
+            {
+               var persistedEntity = PersistEntity(unitOfWorkFactory, () => new Optimistic { StringValue = "myValue" });
 
-            var entity = this.LoadEntity<Optimistic>(unitOfWorkFactory, c => c.ID == persistedEntity.ID);
+               var entity = LoadEntity<Optimistic>(unitOfWorkFactory, c => c.ID == persistedEntity.ID);
 
-            Assert.AreEqual(persistedEntity.StringValue, entity.StringValue);
+               Assert.AreEqual(persistedEntity.StringValue, entity.StringValue);
+            }
          }
       }
 
@@ -177,16 +198,19 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
          this.automappingConfiguration.ShouldMapType(c => c == typeof(Optimistic));
          this.fluentMapperConfigurer.AutoMapEntitiesFromAssemblyOf<Optimistic>();
 
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            var persistedEntity = this.PersistEntity(unitOfWorkFactory, () => new Optimistic { StringValue = "myValue" });
-
-            using (var unitOfWork = unitOfWorkFactory.Create())
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
             {
-               unitOfWork.Attach(persistedEntity);
+               var persistedEntity = PersistEntity(unitOfWorkFactory, () => new Optimistic { StringValue = "myValue" });
 
-               persistedEntity.StringValue = "newStringValue";
-               unitOfWork.Save();
+               using (var unitOfWork = unitOfWorkFactory.Create())
+               {
+                  unitOfWork.Attach(persistedEntity);
+
+                  persistedEntity.StringValue = "newStringValue";
+                  unitOfWork.Save();
+               }
             }
          }
       }
@@ -198,11 +222,14 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
          this.fluentMapperConfigurer.AutoMapEntitiesFromAssemblyOf<GuidParent>();
          this.fluentMapperConfigurer.RegisterOverride<GuidParent>(c => c.Id(p => p.Guid));
 
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            var parent = this.PersistEntity(unitOfWorkFactory, () => new GuidParent { Name = "myName" });
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
+            {
+               var parent = PersistEntity(unitOfWorkFactory, () => new GuidParent { Name = "myName" });
 
-            Assert.IsTrue(parent.Guid != Guid.Empty);
+               Assert.IsTrue(parent.Guid != Guid.Empty);
+            }
          }
       }
 
@@ -214,13 +241,16 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
          this.fluentMapperConfigurer.RegisterOverride<GuidParent>(c => c.Id(p => p.Guid));
          this.fluentMapperConfigurer.RegisterOverride<GuidChild>(c => c.Id(p => p.Guid));
 
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            var parent = this.PersistEntity(unitOfWorkFactory, () => new GuidParent { Name = "myName" });
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
+            {
+               var parent = PersistEntity(unitOfWorkFactory, () => new GuidParent { Name = "myName" });
 
-            var child = this.PersistEntity(unitOfWorkFactory, () => new GuidChild { GuidParent = parent });
+               var child = PersistEntity(unitOfWorkFactory, () => new GuidChild { GuidParent = parent });
 
-            Assert.IsTrue(child.Guid != Guid.Empty);
+               Assert.IsTrue(child.Guid != Guid.Empty);
+            }
          }
       }
 
@@ -233,13 +263,16 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
 
          this.fluentMapperConfigurer.RegisterConvention<XElementConvention>();
 
-         using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.persistenceConfiguration, null, null, null, null, new ConsoleLogger()))
+         using (var sessionFactory = this.configuration.CreateSessionFactory())
          {
-            this.PersistEntity(unitOfWorkFactory, () => new XmlProperty { Xml = XElement.Parse("<xml/>") });
+            using (var unitOfWorkFactory = new SQLiteUnitOfWorkFactory(this.configuration, sessionFactory, null, null, null, null, new ConsoleLogger()))
+            {
+               PersistEntity(unitOfWorkFactory, () => new XmlProperty { Xml = XElement.Parse("<xml/>") });
+            }
          }
       }
 
-      private TEntity PersistEntity<TEntity>(IUnitOfWorkFactory unitOfWorkFactory, Func<TEntity> createEntityFunc) where TEntity : class
+      private static TEntity PersistEntity<TEntity>(IUnitOfWorkFactory unitOfWorkFactory, Func<TEntity> createEntityFunc) where TEntity : class
       {
          using (var unitOfWork = unitOfWorkFactory.Create())
          {
@@ -251,7 +284,7 @@ namespace Atlas.Persistence.NHibernate.Tests.IntegrationTests
          }
       }
 
-      private TEntity LoadEntity<TEntity>(IUnitOfWorkFactory unitOfWorkFactory, Expression<Func<TEntity, bool>> predicate) where TEntity : class
+      private static TEntity LoadEntity<TEntity>(IUnitOfWorkFactory unitOfWorkFactory, Expression<Func<TEntity, bool>> predicate) where TEntity : class
       {
          using (var unitOfWork = unitOfWorkFactory.Create())
          {
