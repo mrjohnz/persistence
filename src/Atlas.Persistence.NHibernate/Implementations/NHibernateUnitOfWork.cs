@@ -107,13 +107,6 @@ namespace Atlas.Persistence.NHibernate.Implementations
          return this.transaction.Session.Load<TEntity>(key);
       }
 
-      public bool IsProxy<TEntity>(TEntity entity) where TEntity : class
-      {
-         this.AssertNotDisposed();
-
-         return entity.IsProxy();
-      }
-
       public void Save()
       {
          this.AssertNotDisposed();

@@ -30,9 +30,6 @@ namespace Atlas.Persistence
          where TEntity : class
          where TKey : struct;
 
-      bool IsProxy<TEntity>(TEntity entity)
-         where TEntity : class;
-
       void Save();
    }
 }

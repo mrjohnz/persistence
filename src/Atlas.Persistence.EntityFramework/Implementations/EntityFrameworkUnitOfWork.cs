@@ -135,11 +135,6 @@ namespace Atlas.Persistence.EntityFramework.Implementations
          throw new NotImplementedException();
       }
 
-      public bool IsProxy<TEntity>(TEntity entity) where TEntity : class
-      {
-         throw new NotImplementedException();
-      }
-
       public void Save()
       {
          this.AssertNotDisposed();

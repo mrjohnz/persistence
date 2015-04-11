@@ -8,8 +8,11 @@ namespace Atlas.Persistence.NHibernate.Tests.Other
    using System;
 
    using Atlas.Persistence;
+   using Atlas.Persistence.NHibernate.Testing;
    using Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration;
    using Atlas.Persistence.TestsBase.Entities;
+
+   using global::NHibernate.Proxy;
 
    using NUnit.Framework;
 
@@ -45,7 +48,35 @@ namespace Atlas.Persistence.NHibernate.Tests.Other
          {
             var proxyFoo = unitOfWork.Proxy<Foo, long>(originalFoo.ID);
 
-            Assert.IsTrue(unitOfWork.IsProxy(proxyFoo));
+            Assert.IsTrue(proxyFoo.IsProxy());
+         }
+      }
+
+      [Test]
+      public void ProxyReturnsUnloadedProxy()
+      {
+         var originalFoo = CreateFoo();
+
+         using (var unitOfWork = CreateUnitOfWork())
+         {
+            var proxyFoo = unitOfWork.Proxy<Foo, long>(originalFoo.ID);
+
+            Assert.IsFalse(proxyFoo.IsLoaded());
+         }
+      }
+
+      [Test]
+      public void TouchingProxyLoadsEntity()
+      {
+         var originalFoo = CreateFoo();
+
+         using (var unitOfWork = CreateUnitOfWork())
+         {
+            var proxyFoo = unitOfWork.Proxy<Foo, long>(originalFoo.ID);
+
+            proxyFoo.StringValue = "This should trigger the load";
+
+            Assert.IsTrue(proxyFoo.IsLoaded());
          }
       }
 
