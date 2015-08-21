@@ -35,7 +35,8 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Atlas.Core">
-      <HintPath>..\..\packages\Atlas.Core.0.0.15.0\lib\net45\Atlas.Core.dll</HintPath>
+      <HintPath>..\..\packages\Atlas.Core.0.0.17.0\lib\net45\Atlas.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <Private>True</Private>
