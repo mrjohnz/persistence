@@ -111,11 +111,6 @@ namespace Atlas.Persistence.NHibernate.Implementations
       {
          this.AssertNotDisposed();
 
-         if (this.transaction == null || !this.transaction.TransactionExists)
-         {
-            return;
-         }
-
          try
          {
             this.transaction.Save();

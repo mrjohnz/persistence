@@ -79,9 +79,12 @@ namespace Atlas.Persistence.NHibernate.Implementations
 
       public override void OnDelete(object entity, object id, object[] state, string[] propertyNames, IType[] types)
       {
-         foreach (var interceptor in this.interceptors)
+         if (this.interceptors != null)
          {
-            interceptor.Remove(new[] { entity });
+            foreach (var interceptor in this.interceptors)
+            {
+               interceptor.Remove(new[] { entity });
+            }
          }
 
          base.OnDelete(entity, id, state, propertyNames, types);

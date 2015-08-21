@@ -64,9 +64,9 @@
     <Compile Include="UserTypes\XmlUserType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Atlas.Core">
-      <HintPath>..\..\packages\Atlas.Core.0.0.17.0\lib\net45\Atlas.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Atlas.Core, Version=0.0.18.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Atlas.Core.0.0.18.0\lib\net45\Atlas.Core.dll</HintPath>
     </Reference>
     <Reference Include="FluentNHibernate">
       <HintPath>..\..\packages\FluentNHibernate.2.0.1.0\lib\net40\FluentNHibernate.dll</HintPath>
