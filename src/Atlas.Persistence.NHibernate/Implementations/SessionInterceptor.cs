@@ -44,9 +44,12 @@ namespace Atlas.Persistence.NHibernate.Implementations
             this.AuditModified(entityType, entity, auditDateTime, userGuid, propertyNames, state);
          }
 
-         foreach (var interceptor in this.interceptors)
+         if (this.interceptors != null)
          {
-            interceptor.Add(new[] { entity });
+            foreach (var interceptor in this.interceptors)
+            {
+               interceptor.Add(new[] { entity });
+            }
          }
 
          return base.OnSave(entity, id, state, propertyNames, types);
@@ -63,9 +66,12 @@ namespace Atlas.Persistence.NHibernate.Implementations
             this.AuditModified(entityType, entity, auditDateTime, userGuid, propertyNames, currentState);
          }
 
-         foreach (var interceptor in this.interceptors)
+         if (this.interceptors != null)
          {
-            interceptor.Modify(new[] { entity });
+            foreach (var interceptor in this.interceptors)
+            {
+               interceptor.Modify(new[] { entity });
+            }
          }
 
          return base.OnFlushDirty(entity, id, currentState, previousState, propertyNames, types);
@@ -118,23 +124,23 @@ namespace Atlas.Persistence.NHibernate.Implementations
          }
       }
 
-      private void AuditCreated(Type entityType, object entity, DateTime dateTime, Guid userGuid, string[] propertyNames, object[] propertyValues)
+      private void AuditCreated(Type entityType, object entity, DateTime createdDateTime, Guid userGuid, string[] propertyNames, object[] propertyValues)
       {
          var entityAsArray = new[] { entity };
 
-         this.auditConfiguration.AuditCreatedDateTime(entityType, entityAsArray, dateTime);
-         this.SetAuditProperty(c => c.CreatedDateTimePropertyName(entityType), propertyNames, propertyValues, dateTime);
+         this.auditConfiguration.AuditCreatedDateTime(entityType, entityAsArray, createdDateTime);
+         this.SetAuditProperty(c => c.CreatedDateTimePropertyName(entityType), propertyNames, propertyValues, createdDateTime);
 
          this.auditConfiguration.AuditCreatedUserGuid(entityType, entityAsArray, userGuid);
          this.SetAuditProperty(c => c.CreatedUserGuidPropertyName(entityType), propertyNames, propertyValues, userGuid);
       }
 
-      private void AuditModified(Type entityType, object entity, DateTime dateTime, Guid userGuid, string[] propertyNames, object[] propertyValues)
+      private void AuditModified(Type entityType, object entity, DateTime modifiedDateTime, Guid userGuid, string[] propertyNames, object[] propertyValues)
       {
          var entityAsArray = new[] { entity };
 
-         this.auditConfiguration.AuditModifiedDateTime(entityType, entityAsArray, dateTime);
-         this.SetAuditProperty(c => c.ModifiedDateTimePropertyName(entityType), propertyNames, propertyValues, dateTime);
+         this.auditConfiguration.AuditModifiedDateTime(entityType, entityAsArray, modifiedDateTime);
+         this.SetAuditProperty(c => c.ModifiedDateTimePropertyName(entityType), propertyNames, propertyValues, modifiedDateTime);
 
          this.auditConfiguration.AuditModifiedUserGuid(entityType, entityAsArray, userGuid);
          this.SetAuditProperty(c => c.ModifiedUserGuidPropertyName(entityType), propertyNames, propertyValues, userGuid);

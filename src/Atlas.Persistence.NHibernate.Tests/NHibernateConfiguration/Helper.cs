@@ -5,7 +5,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
 {
-   using System.Collections.Generic;
    using System.Reflection;
 
    using Atlas.Core.DateTime;
@@ -37,14 +36,14 @@ namespace Atlas.Persistence.NHibernate.Tests.NHibernateConfiguration
          configuration.RegisterConfigurer(mapperConfigurer);
          configuration.RegisterConfigurer(new ProxyConfigurer<CastleProxyFactoryFactory>());
 
-         var interceptors = new List<IInterceptUnitOfWork>();
+         IInterceptUnitOfWork[] interceptors = null;
 
          if (interceptor != null)
          {
-            interceptors.Add(interceptor);
+            interceptors = new[] { interceptor };
          }
 
-         return new NHibernateUnitOfWork.Factory(configuration, interceptors.ToArray(), auditConfiguration, dateTime, userContext, logger);
+         return new NHibernateUnitOfWork.Factory(configuration, interceptors, auditConfiguration, dateTime, userContext, logger);
       }
    }
 }
